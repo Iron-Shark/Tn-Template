@@ -2,6 +2,7 @@
 
   imports = [
     ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   nixpkgs = {
@@ -31,7 +32,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  enviroment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     git
     vim
    ];
@@ -39,7 +40,7 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = {
-      vm = import ../home-manager;
+      vm = import ../home-manager/vm.nix;
     };
   };
 
@@ -56,7 +57,7 @@
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  serveces.xserver = {
+  services.xserver = {
     layout = "us";
     xkbVariant = "";
   };
