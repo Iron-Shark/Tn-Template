@@ -24,8 +24,6 @@
     };
   };
 
-  # FIXME: Add the rest of your current configuration
-
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
@@ -37,6 +35,13 @@
     git
     vim
    ];
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      vm = import ../home-manager;
+    };
+  };
 
   users.users = {
     vm = {
