@@ -38,7 +38,7 @@
    ];
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs outputs; };
     users = {
       vm = import ../home-manager/vm.nix;
     };
