@@ -27,23 +27,25 @@ lvcreate -C -L 17G -n swap pool
 lvcreate -l 100%FREE -n nix-store pool
 
 echo "Encrypting Logical Volumes"
-echo "Create User Password for que"
+echo "Encrypt que Volume"
 cryptsetup luksFormat /dev/pool/root-que
-echo "Create User Password for xin"
+echo "Encrypt xin Volume"
 cryptsetup luksFormat /dev/pool/root-xin
-echo "Create User Password for guest"
+echo "Encrypt guest Volume"
 cryptsetup luksFormat /dev/pool/root-guest
-echo "Use que User Password"
-cryptsetup luksFormat /dev/pool/nix-store
-echo "Use xin User Password"
-cryptsetup luksAddKey /dev/pool/nix-store
-echo "Use guest User Password"
-cryptsetup luksAddKey /dev/pool/nix-store
-echo "Use que User Password"
+echo "Encrypt swap Volume, use guest Password"
 cryptsetup luksFormat /dev/pool/swap
-echo "Use xin User Password"
-cryptsetup luksAddKey /dev/pool/swap
-echo "Use guest User Password"
+echo "Encrypt nix-store Volume, use guest Password"
+cryptsetup luksFormat /dev/pool/nix-store
+
+echo "Adding additional keys to shared Volumes"
+echo "Add que User Password"
+cryptsetup luksFormat /dev/pool/nix-store
+echo "Add xin User Password"
+cryptsetup luksAddKey /dev/pool/nix-store
+echo "Add que User Password"
+cryptsetup luksFormat /dev/pool/swap
+echo "Add xin User Password"
 cryptsetup luksAddKey /dev/pool/swap
 
 echo "Configuring nix-store Volume, use any password"
