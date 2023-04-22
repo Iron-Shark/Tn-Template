@@ -278,13 +278,14 @@ specialisation = {
 ***** TODO Figure out how initialHashedPassword works and how that interacts with current root/user password settings. Possibly remove due to auto login with lvm encryption
 
 *** Install System
-- Each specialization needs to be installed separately. Preform these steps after mounting file systems to the relevant logical volumes, and building the ~$name-hardware.nix~.
+
+After configuring each specialization run this, and then move to the next.
 #+begin_src bash
 nixos-install
-
-reboot
 #+end_src
 
+*** Reboot
+After all specializations are configured reboot the system.
 
 * Resources
 1. [[https://hanckmann.com/posts/nixos-and-erasing-my-darlings/][Erasing your darlings]]
