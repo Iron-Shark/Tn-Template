@@ -14,8 +14,8 @@
   };
 
   home = {
-    username = "vm";
-    homeDirectory = "/home/vm";
+    username = "que";
+    homeDirectory = "/home/que";
   };
 
   home.packages = with pkgs; [ emacs ];

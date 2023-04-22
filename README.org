@@ -1,0 +1,307 @@
+* Pre-installation
+
+** Steps
+
+*** Disk Partitions and Logical Volumes
+- ~/sda~ is a placeholder for the target device
+- ~swapSize~ Should be around ~17GB~ for Vortex
+- ~Boot Partition~ should be ~512MB~
+
+**** Create Partition Table
+#+begin_src bash
+parted /dev/sda -- mklabel gpt
+#+end_src
+
+**** Create Boot Partition
+#+begin_src bash
+parted /dev/sda -- mkpart ESP fat32 1MB 512MB
+parted /dev/sda -- set 3 esp on
+#+end_src
+
+**** Create Physical Volume for all Specialization Roots
+- ~/dev/sda1~ should be the boot partition. With ~/dev/sda2~ being the remainder.
+#+begin_src bash
+pvcreate /dev/sda2
+vgcreate pool /dev/sda2
+#+end_src
+
+**** Create Logical Volumes for all Partitions
+- 15G is a place holder size
+- Nix-store pool needs to be not less that 30G
+- The ~-C~ option creates a contiguous block of memory for the swap pool.
+#+begin_src bash
+lvcreate -L 15G -n root-que pool
+lvcreate -L 15G -n root-xin pool
+lvcreate -L 15G -n root-guest pool
+lvcreate -C -L 17G -n swap pool
+lvcreate -l 100%FREE -n nix-store pool
+#+end_src
+
+**** Encrypt Logical Volumes
+- Entering multiple passwords into the swap and store volumes allows them to be shared without the need for multiple passwords on login.
+#+begin_src bash
+cryptsetup luksFormat /dev/pool/root-que
+cryptsetup luksFormat /dev/pool/root-xin
+cryptsetup luksFormat /dev/pool/root-guest
+cryptsetup luksFormat /dev/pool/nix-store # same password as que
+cryptsetup luksAddKey /dev/pool/nix-store # same password as xin
+cryptsetup luksAddKey /dev/pool/nix-store # same password as guest
+cryptsetup luksFormat /dev/pool/swap # same password as que
+cryptsetup luksAddKey /dev/pool/swap # same password as xin
+cryptsetup luksAddKey /dev/pool/swap # same password as guest
+#+end_src
+
+*** Configure Logical Volumes
+- ~/dev/<root-partition>~ is a place holder for the root partition previously created on ~/sda~
+
+**** Que
+#+begin_src bash
+cryptsetup luksOpen /dev/pool/root-que crypto-que
+mkfs.btrfs /dev/pool/crypto-que
+mkdir /tmp/root-que
+mount /dev/pool/crypto-que -o compress-force=zstd,noatime,ssd /tmp/root-que
+#+end_src
+
+**** Xin
+#+begin_src bash
+cryptsetup luksOpen /dev/pool/root-que crypto-xin
+mkfs.btrfs /dev/pool/crypto-xin
+mkdir /tmp/root-xin
+mount /dev/pool/crypto-xin -o compress-force=zstd,noatime,ssd /tmp/root-xin
+#+end_src
+
+**** Guest
+#+begin_src bash
+cryptsetup luksOpen /dev/pool/root-que crypto-guest
+mkfs.btrfs /dev/pool/crypto-guest
+mkdir /tmp/root-guest
+mount /dev/pool/crypto-guest -o compress-force=zstd,noatime,ssd /tmp/root-guest
+#+end_src
+
+**** Nix-store
+#+begin_src bash
+cryptsetup luksOpen /dev/pool/nix-store nix-store
+mkfs.btrfs /dev/pool/nix-store
+#+end_src
+
+**** Swap
+- I'm not sure if the swap volume should be encrypted if I am also using random key encryption for each specialization.
+#+begin_src bash
+cryptsetup luksOpen /dev/pool/swap swap
+mkswap /dev/pool/lvswap
+#+end_src
+
+*** Configure Root File Systems
+- ~$name~ is a place holder for each specialization name. All steps need to be preformed for all three.
+
+**** Create BTRFS Sub-Volumes
+#+begin_src bash
+cd /tmp/root-$name
+btrfs subvolume create home
+btrfs subvolume create persist
+btrfs subvolume create nixos-config
+#+end_src
+
+**** Mount NixOS Directories to File System
+#+begin_src bash
+mount -t tmpfs none /mnt
+
+mkdir /mnt/{boot,home,persist}
+mkdir /mnt/etc/nixos
+
+mount /dev/pool/root-$name /mnt/boot
+
+mount /dev/pool/root-$name -o compress-force=zstd,noatime,ssd,subvol=home /mnt/home
+mount /dev/pool/root-$name -o compress-force=zstd,noatime,ssd,subvol=persist /mnt/persist
+
+mount /dev/pool/root-$name -o compress-force=zstd,noatime,ssd,subvol=nixos-config /mnt/etc/nixos
+#+end_src
+
+**** Connect Nix-Store Volume to Specializations
+#+begin_src bash
+mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
+#+end_src
+
+**** Connect SWAP to specializations
+- The Swap partition is automatically mounted if available. (I think...)
+
+*** Instantiate System
+
+**** Generate System Configuration
+I am not sure it this need to be run for all three specializations or just once.
+#+begin_src bash
+nixos-generate-config --root /mnt
+#+end_src
+
+**** Configure Hardware Settings
+- These settings can be found in ~/mnt/etc/nixos/hardware-configuration.nix~
+- ~hardware-configuration.nix~ Needs to be split into ~$name-hardware.nix~ and then those files need to be sent to ~configuration.nix~.
+
+***** Add File Systems
+#+begin_src nix
+  boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/<your uuid>";
+
+  # Filesystems (root on tmpfs)
+  fileSystems."/" =
+    { device = "none";
+      fsType = "tmpfs";
+      neededForBoot = true;  # required
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/pool/nix-store";
+      fsType = "btrfs";
+      options = [ "defaults" "compress-force=zstd" "noatime" "ssd" "subvol=nix" ];
+      neededForBoot = true;  # required
+    };
+
+  fileSystems."/etc/nixos" =
+    { device = "/dev/pool/root-$name";
+      fsType = "btrfs";
+      options = [ "defaults" "compress-force=zstd" "noatime" "ssd" "subvol=nixos-config" ];
+    };
+
+  fileSystems."/persist" =
+    { device = "/dev/pool/root-$name";
+      fsType = "btrfs";
+      options = [ "defaults" "compress-force=zstd" "noatime" "ssd" "subvol=nx-persist" ];
+      neededForBoot = true;
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/pool/root-$name";
+      fsType = "btrfs";
+      options = [ "defaults" "compress-force=zstd" "noatime" "ssd" "subvol=home" ];
+    };
+
+ fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/1E94-4A2A";
+      fsType = "vfat";
+    };
+#+end_src
+
+***** Add Random Key Encryption to Swap
+#+begin_src nix
+ swapDevices = [ {
+    device = "/dev/pool/swap";
+    randomEncryption.enable = true;
+  } ];
+#+end_src
+
+***** Add Impermanence and specialization Modules to each ~$name-hardware.nix~
+- Additional files will need to be added once the system is configured.
+
+#+begin_src nix
+({ config, lib, pkgs, modulesPath, ... }:
+
+config = lib.mkIf (config.specialisation != {})
+
+let
+  impermanence = builtins.fetchTarball "https://github.com/nix-community/impermanence/archive/master.tar.gz";
+in
+{
+  specialisation = {
+  $name.configuration = {
+  system.nixos.tags = [ "$name" ];
+  # All other settings
+  # ...
+
+  # this folder is where the files will be stored (don't put it in tmpfs)
+  environment.persistence."/persist" = {
+    directories = [
+      "/etc/ssh"
+      "/var/log"
+      "/var/lib/cups"
+      "/var/lib/fprint"
+      "/var/db/sudo/lectured"
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/nix/id_rsa"
+      "/var/lib/cups/printers.conf"
+      "/var/lib/logrotate.status"
+    ];
+  };
+
+  # Even more settings
+  # ...
+})
+#+end_src
+
+**** Configure System Settings
+
+***** Split Hardware file and add it to ~configuaration.nix~
+#+begin_src nix
+imports =
+  [
+    ./que-hardware.nix
+    ./xin-hardware.nix
+    ./guest-hardware.nix
+  ];
+#+end_src
+
+***** Add LVM detection
+#+begin_src nix
+boot.initrd.preLVMCommands = "lvm vgchange -ay";
+#+end_src
+
+***** Create Guest, Stream, and Personal Specializations
+- This code block shows a generic example of two configurations. Each specialization can support all the options of a normal ~configuration.nix~
+#+begin_src nix
+specialisation = {
+  $name.configuration = {
+    system.nixos.tags = [ "$name" ];
+    services.xserver.desktopManager.plasma5.enable = true;
+    users.users.chani = {
+      isNormalUser = true;
+      uid = 1001;
+      extraGroups = [ "networkmanager" "video" ];
+    };
+    services.xserver.displayManager.autoLogin = {
+      enable = true;
+      user = "$name";
+    };
+  };
+
+  $name.configuration = {
+    system.nixos.tags = [ "$name" ];
+    services.xserver.desktopManager.gnome.enable = true;
+    users.users.paul = {
+      isNormalUser = true;
+      uid = 1002;
+      extraGroups = [ "networkmanager" "video" ];
+    };
+    services.xserver.displayManager.autoLogin = {
+      enable = true;
+      user = "$name";
+    };
+    environment.systemPackages = with pkgs; [
+      dune-release
+    ];
+  };
+};
+#+end_src
+
+***** Make users immutable
+#+begin_src nix
+# Don't allow mutation of users outside of the config.
+  users.mutableUsers = false;
+  users.users.root.initialHashedPassword = "HASHEDPASSWORD";  # hash via the mkpasswd utility
+#+end_src
+
+****** TODO Figure out how initialHashedPassword works and how that interacts with current root/user password settings. Possibly remove due to auto login with lvm encryption
+
+**** Install System
+- Each specialization needs to be installed separately. Preform these steps after mounting file systems to the relevant logical volumes, and building the ~$name-hardware.nix~.
+#+begin_src bash
+nixos-install
+
+reboot
+#+end_src
+
+
+* Resources
+1. [[https://hanckmann.com/posts/nixos-and-erasing-my-darlings/][Erasing your darlings]]
+2. [[https://www.tweag.io/blog/2022-08-18-nixos-specialisations/][NixOS specializations]]
+3. [[https://www.tweag.io/blog/2022-11-01-hard-user-separation-with-nixos/][Hard user separation]]
+4. [[https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html][Encrypted BTRFS with Opt in State]]

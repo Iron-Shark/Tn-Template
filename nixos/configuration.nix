@@ -25,30 +25,28 @@
     };
   };
 
-  networking.hostName = "nixos";
+  networking.hostName = "TEST-Name";
   networking.networkmanager.enable = true;
 
-  boot.loader.grub.enable = true; 
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
     vim
-   ];
+  ];
 
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      vm = import ../home-manager/vm.nix;
+      que = import ../home-manager/vm.nix;
     };
   };
 
   users.users = {
-    vm = {
+    que = {
       isNormalUser = true;
       extraGroups = [ "wheel" "networkmanager" ];
-    };
+     };
   };
 
   time.timeZone = "America/Detroit";

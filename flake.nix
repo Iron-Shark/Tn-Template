@@ -30,7 +30,7 @@
       homeManagerModules = import ./modules/home-manager;
 
       nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+        TEST-Name = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/configuration.nix
