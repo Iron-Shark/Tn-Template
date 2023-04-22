@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Ensures the entire script is run as root.
-sudo -i
+if [[ $UID != 0 ]]; then
+    echo "Please run this script with sudo:"
+    echo "sudo $0 $*"
+    exit 1
+fi
 
 echo "Please enter UserName of Specialization to be configured"
 echo -n "UserName: "
