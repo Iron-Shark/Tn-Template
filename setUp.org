@@ -1,30 +1,29 @@
-* Pre-installation
 This file describes the general steps needed, to configure system hardware before installing NixOS.
 
-** Disk Partitions and Logical Volumes
+* Disk Partitions and Logical Volumes
 - ~/sda~ is a placeholder for the target device
 - ~swapSize~ Should be around ~17GB~ for Vortex
 - ~Boot Partition~ should be ~512MB~
 
-*** Create Partition Table
+** Create Partition Table
 #+begin_src bash
 parted /dev/sda -- mklabel gpt
 #+end_src
 
-*** Create Boot Partition
+** Create Boot Partition
 #+begin_src bash
 parted /dev/sda -- mkpart ESP fat32 1MB 512MB
 parted /dev/sda -- set 3 esp on
 #+end_src
 
-*** Create Physical Volume for all Specialization Roots
+** Create Physical Volume for all Specialization Roots
 - ~/dev/sda1~ should be the boot partition. With ~/dev/sda2~ being the remainder.
 #+begin_src bash
 pvcreate /dev/sda2
 vgcreate pool /dev/sda2
 #+end_src
 
-*** Create Logical Volumes for all Partitions
+** Create Logical Volumes for all Partitions
 - 15G is a place holder size
 - Nix-store pool needs to be not less that 30G
 - The ~-C~ option creates a contiguous block of memory for the swap pool.
@@ -36,7 +35,7 @@ lvcreate -C -L 17G -n swap pool
 lvcreate -l 100%FREE -n nix-store pool
 #+end_src
 
-*** Encrypt Logical Volumes
+** Encrypt Logical Volumes
 - Entering multiple passwords into the swap and store volumes allows them to be shared without the need for multiple passwords on login.
 #+begin_src bash
 cryptsetup luksFormat /dev/pool/root-que
