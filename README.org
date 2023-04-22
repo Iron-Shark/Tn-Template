@@ -1,4 +1,4 @@
-This file describes the general steps needed, to configure system hardware before installing NixOS.
+This file describes the general steps needed, to configure system hardware before installing NixOS. Configured using "stateless" configuration, specializations, and BTRFS wish LVM.
 
 * Disk Partitions and Logical Volumes
 - ~/sda~ is a placeholder for the target device
