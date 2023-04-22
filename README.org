@@ -13,12 +13,14 @@ parted /dev/sda -- mklabel gpt
 ** Create Boot Partition
 #+begin_src bash
 parted /dev/sda -- mkpart ESP fat32 1MB 512MB
-parted /dev/sda -- set 3 esp on
+parted /dev/sda -- set 1 esp on
 #+end_src
 
 ** Create Physical Volume
 - ~/dev/sda1~ should be the boot partition. With ~/dev/sda2~ being the remainder.
+- ~/sda2~ ends up as =465G=
 #+begin_src bash
+parted /dev/sda -- mkpart primary 512MB 100%
 pvcreate /dev/sda2
 vgcreate pool /dev/sda2
 #+end_src
@@ -71,17 +73,17 @@ swapon /dev/pool/swap
 
 *** Temporary File System for Root
 #+begin_src bash
-cryptsetup luksOpen /dev/pool/root-que crypto-que
-mkfs.btrfs /dev/pool/crypto-que
-mkdir /tmp/root-que
-mount /dev/pool/crypto-que -o compress-force=zstd,noatime,ssd /tmp/root-que
+cryptsetup luksOpen /dev/pool/root-que crypto-$name
+mkfs.btrfs /dev/pool/crypto-$name
+mkdir /tmp/root/
+mount /dev/pool/crypto-$name -o compress-force=zstd,noatime,ssd /tmp/root/
 mkdir /tmp/nix
 mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd /tmp/nix
 #+end_src
 
 *** Create BTRFS Sub-Volumes
 #+begin_src bash
-cd /tmp/root-$name
+cd /tmp/root
 btrfs subvolume create home
 btrfs subvolume create persist
 btrfs subvolume create nixos-config
@@ -108,7 +110,7 @@ mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
 #+end_src
 
 *** Connect SWAP to specializations
-- The Swap partition is automatically mounted if available. (I think...)
+- The Swap partition is automatically mounted if available. It just needs to be specified in ~$name-hardware.nix~.
 
 ** Instantiate System
 
@@ -213,6 +215,8 @@ in
   # ...
 })
 #+end_src
+
+**** Confirm that Swap has been detected.
 
 *** Configure System Settings
 
