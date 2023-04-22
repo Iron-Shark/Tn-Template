@@ -16,17 +16,18 @@ parted /dev/sda -- mkpart ESP fat32 1MB 512MB
 parted /dev/sda -- set 3 esp on
 #+end_src
 
-** Create Physical Volume for all Specialization Roots
+** Create Physical Volume
 - ~/dev/sda1~ should be the boot partition. With ~/dev/sda2~ being the remainder.
 #+begin_src bash
 pvcreate /dev/sda2
 vgcreate pool /dev/sda2
 #+end_src
 
-** Create Logical Volumes for all Partitions
+** Create Logical Volumes
 - 15G is a place holder size
 - Nix-store pool needs to be not less that 30G
 - The ~-C~ option creates a contiguous block of memory for the swap pool.
+
 #+begin_src bash
 lvcreate -L 15G -n root-que pool
 lvcreate -L 15G -n root-xin pool
