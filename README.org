@@ -231,7 +231,7 @@ imports =
 boot.initrd.preLVMCommands = "lvm vgchange -ay";
 #+end_src
 
-**** Create Guest, Stream, and Personal Specializations
+**** Create Guest, Xin, Que Specializations
 - This code block shows a generic example of two configurations. Each specialization can support all the options of a normal ~configuration.nix~
 #+begin_src nix
 specialisation = {
