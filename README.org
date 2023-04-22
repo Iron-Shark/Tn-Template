@@ -113,7 +113,8 @@ mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
 ** Instantiate System
 
 *** Generate System Configuration
-I am not sure it this need to be run for all three specializations or just once.
+These commands need to be run for each specializations.
+
 #+begin_src bash
 nixos-generate-config --root /mnt
 #+end_src
