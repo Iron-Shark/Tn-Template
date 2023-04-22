@@ -24,8 +24,8 @@ vgcreate pool /dev/sda2
 #+end_src
 
 ** Create Logical Volumes
-- 15G is a place holder size
-- Nix-store pool needs to be not less that 30G
+- 15G is a place holder size.
+- Nix-store pool needs to be not less that 50G
 - The ~-C~ option creates a contiguous block of memory for the swap pool.
 
 #+begin_src bash
@@ -59,7 +59,7 @@ mkfs.btrfs /dev/pool/nix-store
 #+end_src
 
 *** Swap
-- I'm not sure if the swap volume should be encrypted if I am also using random key encryption for each specialization.
+- I'm not sure if the swap volume should be encrypted if I am also using random key encryption for each specialization. The goal with adding random key is to prevent things from being shared between specializations, but I'm not sure if that is actually something worth worrying about. I don't really usu hibernation.
 #+begin_src bash
 cryptsetup luksOpen /dev/pool/swap swap
 mkswap /dev/pool/swap
