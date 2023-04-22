@@ -67,7 +67,7 @@ swapon /dev/pool/swap
 #+end_src
 
 ** Configure Specializations
-- ~$name~ is a place holder for each specialization name. All steps need to be preformed for each.
+- ~$name~ is a place holder for the specialization que, xin, guest. All steps need to be preformed for each.
 
 *** Temporary File System for Root
 #+begin_src bash
