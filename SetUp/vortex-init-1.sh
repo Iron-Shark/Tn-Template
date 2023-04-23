@@ -25,10 +25,10 @@ pvcreate /dev/nvme0n1p3
 vgcreate pool /dev/nvme0n1p3
 
 echo "Creating Logical Volumes"
-lvcreate -L 150G -n root-que pool
-lvcreate -L 150G -n root-xin pool
-lvcreate -L 100G -n root-guest pool
-lvcreate -l 100%FREE -n nix-store pool
+lvcreate -qL 150G -n root-que pool
+lvcreate -qL 150G -n root-xin pool
+lvcreate -qL 100G -n root-guest pool
+lvcreate -ql 100%FREE -n nix-store pool
 
 echo "Encrypting Logical Volumes"
 echo "!!REMEMBER TO CHECK CAPS AND NUMBER LOCK!!"
