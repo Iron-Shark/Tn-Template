@@ -20,7 +20,7 @@ mkswap /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 
 echo "Creating Primary Partition and Volumes"
-parted /dev/nvme0n1 -- mkpart primary 512MB 100%
+parted /dev/nvme0n1 -- mkpart primary 18GB 100%
 pvcreate /dev/nvme0n1p3
 vgcreate pool /dev/nvme0n1p3
 
