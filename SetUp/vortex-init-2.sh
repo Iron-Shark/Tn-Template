@@ -27,7 +27,7 @@ umount /mnt
 echo "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt
 mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
-mount /dev/mapper/crypto-$userName /mnt/boot
+mount /dev/nvme0n1p1 /mnt/boot
 mount -o subvol=nix,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/nix
 mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/etc
 mount -o subvol=log,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/var/log
