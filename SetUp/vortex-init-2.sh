@@ -14,26 +14,25 @@ read -r userName
 echo "Creating File System, and Mounting Root for user $userName"
 cryptsetup luksOpen /dev/pool/root-$userName crypto-$userName
 mkfs.btrfs /dev/mapper/crypto-$userName
-mkdir /tmp/root/
-mount /dev/mapper/crypto-$userName -o compress-force=zstd,noatime,ssd /tmp/root/
-mkdir /tmp/nix
-mount /dev/mapper/nix-store -o compress-force=zstd,noatime,ssd /tmp/nix
 
 echo "Creating Root Sub-volumes for user $userName"
-cd /tmp/root
+mount /dev/mapper/crypto-$userName /mnt
+btrfs subvolume create nix
+btrfs subvolume create etc
+btrfs subvolume create log
+btrfs subvolume create root
 btrfs subvolume create home
-btrfs subvolume create persist
-btrfs subvolume create nixos-config
+mount /mnt
 
-echo "Create and mount NixOS Sub-directories for user $userName"
-mount -t tmpfs none /mnt
-mkdir /mnt/{boot,home,persist,etc}
-mkdir /mnt/etc/nixos
-mount /dev/pool/root /mnt/boot
-mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=home /mnt/home
-mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=persist /mnt/persist
-mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=nixos-config /mnt/etc/nixos
-mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
+echo "Mounting Sub-Volumes for $userName"
+mount -t tmpfs -o mode=755 none /mnt
+mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
+mount /dev/mapper/crypto-$userName /mnt/boot
+mount -o subvol=nix,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/nix
+mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/etc
+mount -o subvol=log,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/var/log
+mount -o subvol=root,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/root
+mount -o subvol=home,compress-force=zstd /dev/mapper/crypto-$userName /mnt/home
 
 echo "Creating hardware-configuration.nix file"
 nixos-generate-config --root /mnt
