@@ -28,15 +28,15 @@ lvcreate -l 100%FREE -n nix-store pool
 
 echo "Encrypting Logical Volumes"
 echo "Encrypt que Volume"
-cryptsetup -q luksFormat /dev/pool/root-que
+cryptsetup luksFormat /dev/pool/root-que
 echo "Encrypt xin Volume"
-cryptsetup -q luksFormat /dev/pool/root-xin
+cryptsetup luksFormat /dev/pool/root-xin
 echo "Encrypt guest Volume"
-cryptsetup -q luksFormat /dev/pool/root-guest
+cryptsetup luksFormat /dev/pool/root-guest
 echo "Encrypt nix-store Volume, use guest Password"
-cryptsetup -q luksFormat /dev/pool/nix-store
+cryptsetup luksFormat /dev/pool/nix-store
 
-echo "Adding additional keys to shared Volume"
+echo "Adding additional keys to nix-store Volume"
 echo "Add que User Password"
 cryptsetup luksAddKey /dev/pool/nix-store
 echo "Add xin User Password"
