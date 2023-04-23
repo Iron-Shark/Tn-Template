@@ -27,13 +27,13 @@ btrfs subvolume create nixos-config
 
 echo "Create and mount NixOS Sub-directories for user $userName"
 mount -t tmpfs none /mnt
-mkdir /mnt/{boot,home,persist}
+mkdir /mnt/{boot,home,persist,etc}
 mkdir /mnt/etc/nixos
-mount /dev/mapper/root /mnt/boot
-mount /dev/mapper/root -o compress-force=zstd,noatime,ssd,subvol=home /mnt/home
-mount /dev/mapper/root -o compress-force=zstd,noatime,ssd,subvol=persist /mnt/persist
-mount /dev/mapper/root -o compress-force=zstd,noatime,ssd,subvol=nixos-config /mnt/etc/nixos
-mount /dev/mapper/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
+mount /dev/pool/root /mnt/boot
+mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=home /mnt/home
+mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=persist /mnt/persist
+mount /dev/pool/root -o compress-force=zstd,noatime,ssd,subvol=nixos-config /mnt/etc/nixos
+mount /dev/pool/nix-store -o compress-force=zstd,noatime,ssd,subvol=nix /mnt/nix
 
 echo "Creating hardware-configuration.nix file"
 nixos-generate-config --root /mnt
