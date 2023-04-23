@@ -28,7 +28,6 @@ echo "Creating Logical Volumes"
 lvcreate -L 150G -n root-que pool
 lvcreate -L 150G -n root-xin pool
 lvcreate -L 100G -n root-guest pool
-lvcreate -C y -L 17G -n swap pool
 lvcreate -l 100%FREE -n nix-store pool
 
 echo "Encrypting Logical Volumes"
