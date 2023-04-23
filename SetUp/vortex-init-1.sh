@@ -14,10 +14,15 @@ echo "Creating Boot Partition"
 parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
 parted /dev/nvme0n1 -- set 1 esp on
 
+echo "Creating SWAP Partition"
+parted /dev/nvme0n1 -- mkpart linux-swap 512MB 18GB
+mkswap /dev/nvme0n1p2
+swapon /dev/nvme0n1p2
+
 echo "Creating Primary Partition and Volumes"
 parted /dev/nvme0n1 -- mkpart primary 512MB 100%
-pvcreate /dev/nvme0n1p2
-vgcreate pool /dev/nvme0n1p2
+pvcreate /dev/nvme0n1p3
+vgcreate pool /dev/nvme0n1p3
 
 echo "Creating Logical Volumes"
 lvcreate -L 150G -n root-que pool
@@ -44,11 +49,6 @@ cryptsetup luksAddKey /dev/pool/nix-store
 
 echo "Configuring nix-store Volume, use any password"
 cryptsetup luksOpen /dev/pool/nix-store nix-store
-mkfs.btrfs /dev/pool/nix-store
-
-echo "Configuring swap Volume, use any password"
-cryptsetup luksOpen /dev/pool/swap swap
-mkswap /dev/pool/swap
-swapon /dev/pool/swap
+mkfs.btrfs /dev/mapper/nix-store
 
 echo "System Partitions configured. Please run vortex-init-2.sh for each user specialization."
