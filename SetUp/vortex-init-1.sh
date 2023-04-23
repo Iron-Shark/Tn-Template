@@ -33,20 +33,14 @@ echo "Encrypt xin Volume"
 cryptsetup -q luksFormat /dev/pool/root-xin
 echo "Encrypt guest Volume"
 cryptsetup -q luksFormat /dev/pool/root-guest
-echo "Encrypt swap Volume, use guest Password"
-cryptsetup -q luksFormat /dev/pool/swap
 echo "Encrypt nix-store Volume, use guest Password"
 cryptsetup -q luksFormat /dev/pool/nix-store
 
-echo "Adding additional keys to shared Volumes"
+echo "Adding additional keys to shared Volume"
 echo "Add que User Password"
-cryptsetup luksFormat /dev/pool/nix-store
+cryptsetup luksAddKey /dev/pool/nix-store
 echo "Add xin User Password"
 cryptsetup luksAddKey /dev/pool/nix-store
-echo "Add que User Password"
-cryptsetup luksFormat /dev/pool/swap
-echo "Add xin User Password"
-cryptsetup luksAddKey /dev/pool/swap
 
 echo "Configuring nix-store Volume, use any password"
 cryptsetup luksOpen /dev/pool/nix-store nix-store
