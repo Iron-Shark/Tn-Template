@@ -17,12 +17,12 @@ mkfs.btrfs /dev/mapper/crypto-$userName
 
 echo "Creating Root Sub-volumes for user $userName"
 mount /dev/mapper/crypto-$userName /mnt
-btrfs subvolume create nix
-btrfs subvolume create etc
-btrfs subvolume create log
-btrfs subvolume create root
-btrfs subvolume create home
-mount /mnt
+btrfs subvolume create /mnt/nix
+btrfs subvolume create /mnt/etc
+btrfs subvolume create /mnt/log
+btrfs subvolume create /mnt/root
+btrfs subvolume create /mnt/home
+umount /mnt
 
 echo "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt

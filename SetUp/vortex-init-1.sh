@@ -31,6 +31,7 @@ lvcreate -L 100G -n root-guest pool
 lvcreate -l 100%FREE -n nix-store pool
 
 echo "Encrypting Logical Volumes"
+echo "!!REMEMBER TO CHECK CAPS AND NUMBER LOCK!!"
 echo "Encrypt que Volume"
 cryptsetup luksFormat /dev/pool/root-que
 echo "Encrypt xin Volume"
