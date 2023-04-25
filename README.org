@@ -299,6 +299,26 @@ After all specializations are configured reboot the system.
 
 * TODO Simple Configuration Learning Install
 
+** Simple installation steps
+*** Boot from Live USB
+
+*** Install needed packages
+- use ~sudo nix-env -iA nixos.packageName~ to install :
+  - ~git~
+  - ~vim~
+
+*** Switch to colemak
+- ~loadkeys colemak-dh~ To switch to the colemak layout
+
+*** Manual installation
+- ~sudo -i~ can be used to switch to root user
+
+**** Network Connection
+- Use ~nmcli~ if not on LAN.
+
+**** Partitioning and Formatting
+- Largely the same as a simplified form of vortex-setup-1.sh
+
 ** TODO Read Nixos Installation instructions
 
 *** TODO Find out how sharing a boot volume between specializations works.

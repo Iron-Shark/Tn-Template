@@ -11,14 +11,14 @@ echo "Creating Partition Table"
 parted /dev/nvme0n1 -- mklabel gpt
 
 echo "Creating Boot Partition"
-# TODO : Confirm that this is targeting the correct partition
 parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
 parted /dev/nvme0n1 -- set 1 esp on
+mkfs.fat -F 32 -n boot /dev/sda3
 
 echo "Creating SWAP Partition"
 parted /dev/nvme0n1 -- mkpart linux-swap 512MB 18GB
-mkswap /dev/nvme0n1p2
-swapon /dev/nvme0n1p2
+mkswap -L swap /dev/nvme0n1p2
+swapon /dev/nvme0n1/by-label/swap
 
 echo "Creating Primary Partition and Volumes"
 parted /dev/nvme0n1 -- mkpart primary 18GB 100%
