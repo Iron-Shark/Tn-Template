@@ -40,7 +40,6 @@ cryptsetup -qy luksFormat /dev/pool/pool-xin
 echo "Encrypt guest Volume"
 cryptsetup -qy luksFormat /dev/pool/pool-guest
 echo "Encrypt nix-store Volume, use guest Password"
-nixos-install
 cryptsetup -qy luksFormat /dev/pool/pool-nix-store
 
 echo "Adding additional keys to nix-store Volume"
@@ -50,7 +49,7 @@ echo "Add xin User Password"
 cryptsetup luksAddKey /dev/pool/pool-nix-store
 
 echo "Configuring nix-store Volume, use any password"
-cryptsetup luksOpen /dev/pool/pool-nix-store pool-nix-store
-mkfs.btrfs -L nix-store /dev/mapper/pool-nix-store
+cryptsetup luksOpen /dev/pool/pool-nix-store nix-store
+mkfs.btrfs -L nix-store /dev/mapper/nix-store
 
 echo "System Partitions configured. Please run vortex-init-2.sh for each user specialization."

@@ -12,14 +12,13 @@ echo -n "UserName: "
 read -r userName
 
 echo "Creating File System, and Mounting Root for user $userName"
-cryptsetup luksOpen /dev/pool/pool-$userName pool-$userName
+cryptsetup luksOpen /dev/pool/pool-$userName crypto-$userName
 mkfs.btrfs -L root-$userName /dev/mapper/crypto-$userName
 
 echo "Creating Root Sub-volumes for user $userName"
 # replace this with mount /dev/disk/by-label/labelName /mnt
 # not sure how it will work but might make things a bit simpler
 mount /dev/nvme0n1/by-label/root-$userName /mnt
-btrfs subvolume create /mnt/nix
 btrfs subvolume create /mnt/etc
 btrfs subvolume create /mnt/log
 btrfs subvolume create /mnt/root
@@ -30,7 +29,7 @@ echo "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt
 mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
 mount /dev/nvme0n1/by-label/boot /mnt/boot
-mount -o subvol=nix,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/nix
+mount -o subvol=etc,compress-force=zstd,noatime /dev/nvme0n1/by-label/nix-store /mnt/nix
 mount -o subvol=etc,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/etc
 mount -o subvol=log,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/var/log
 mount -o subvol=root,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/root
