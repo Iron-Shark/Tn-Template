@@ -13,7 +13,7 @@ parted /dev/nvme0n1 -- mklabel gpt
 echo "Creating Boot Partition"
 parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
 parted /dev/nvme0n1 -- set 1 esp on
-mkfs.fat -F 32 -n boot /dev/sda3
+mkfs.fat -F 32 -n boot /dev/nvme0n1p1
 
 echo "Creating SWAP Partition"
 parted /dev/nvme0n1 -- mkpart linux-swap 512MB 18GB
@@ -22,7 +22,7 @@ swapon /dev/nvme0n1/by-label/swap
 
 echo "Creating Primary Partition and Volumes"
 parted /dev/nvme0n1 -- mkpart primary 18GB 100%
-pvcreate /dev/nvme0n1p3
+pvcreate -ff /dev/nvme0n1p3
 vgcreate pool /dev/nvme0n1p3
 
 echo "Creating Logical Volumes"
@@ -40,6 +40,7 @@ cryptsetup -qy luksFormat /dev/pool/pool-xin
 echo "Encrypt guest Volume"
 cryptsetup -qy luksFormat /dev/pool/pool-guest
 echo "Encrypt nix-store Volume, use guest Password"
+nixos-install
 cryptsetup -qy luksFormat /dev/pool/pool-nix-store
 
 echo "Adding additional keys to nix-store Volume"
