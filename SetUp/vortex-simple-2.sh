@@ -18,7 +18,7 @@ mkfs.btrfs -L root-$userName /dev/mapper/crypto-$userName
 echo "Creating Root Sub-volumes for user $userName"
 # replace this with mount /dev/disk/by-label/labelName /mnt
 # not sure how it will work but might make things a bit simpler
-mount /dev/nvme0n1/by-label/root-$userName /mnt
+mount -t btrfs /dev/nvme0n1/by-label/root-$userName /mnt
 btrfs subvolume create /mnt/etc
 btrfs subvolume create /mnt/log
 btrfs subvolume create /mnt/root
