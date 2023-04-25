@@ -18,7 +18,7 @@ mkfs.btrfs -L root-$userName /dev/mapper/crypto-$userName
 echo "Creating Root Sub-volumes for user $userName"
 # replace this with mount /dev/disk/by-label/labelName /mnt
 # not sure how it will work but might make things a bit simpler
-mount -t btrfs /dev/nvme0n1/by-label/root-$userName /mnt
+mount -t btrfs /dev/nvme0n1/by-label/crypto-$userName /mnt
 btrfs subvolume create /mnt/etc
 btrfs subvolume create /mnt/log
 btrfs subvolume create /mnt/root
@@ -29,11 +29,11 @@ echo "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt
 mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
 mount /dev/nvme0n1/by-label/boot /mnt/boot
-mount -o subvol=etc,compress-force=zstd,noatime /dev/nvme0n1/by-label/nix-store /mnt/nix
-mount -o subvol=etc,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/etc
-mount -o subvol=log,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/var/log
-mount -o subvol=root,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/root
-mount -o subvol=home,compress-force=zstd /dev/nvme0n1/by-label/root-$userName /mnt/home
+mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/nix-store /mnt/nix
+mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/etc
+mount -o subvol=log,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/var/log
+mount -o subvol=root,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/root
+mount -o subvol=home,compress-force=zstd /dev/mapper/crypto-$userName /mnt/home
 
 echo "Creating hardware-configuration.nix file"
 nixos-generate-config --root /mnt
