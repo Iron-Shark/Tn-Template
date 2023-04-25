@@ -12,14 +12,13 @@ echo -n "UserName: "
 read -r userName
 
 echo "Creating File System, and Mounting Root for user $userName"
-cryptsetup luksOpen /dev/pool/root-$userName crypto-$userName
-# add labels using the -L flag
-mkfs.btrfs /dev/mapper/crypto-$userName
+cryptsetup luksOpen /dev/pool/pool-$userName pool-$userName
+mkfs.btrfs -L root-$userName /dev/mapper/crypto-$userName
 
 echo "Creating Root Sub-volumes for user $userName"
 # replace this with mount /dev/disk/by-label/labelName /mnt
 # not sure how it will work but might make things a bit simpler
-mount /dev/mapper/crypto-$userName /mnt
+mount /dev/nvme0n1/by-label/root-$userName /mnt
 btrfs subvolume create /mnt/nix
 btrfs subvolume create /mnt/etc
 btrfs subvolume create /mnt/log
@@ -30,16 +29,16 @@ umount /mnt
 echo "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt
 mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
-mount /dev/disk/by-label/boot /mnt/boot
-mount -o subvol=nix,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/nix
-mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/etc
-mount -o subvol=log,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/var/log
-mount -o subvol=root,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/root
-mount -o subvol=home,compress-force=zstd /dev/mapper/crypto-$userName /mnt/home
+mount /dev/nvme0n1/by-label/boot /mnt/boot
+mount -o subvol=nix,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/nix
+mount -o subvol=etc,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/etc
+mount -o subvol=log,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/var/log
+mount -o subvol=root,compress-force=zstd,noatime /dev/nvme0n1/by-label/root-$userName /mnt/root
+mount -o subvol=home,compress-force=zstd /dev/nvme0n1/by-label/root-$userName /mnt/home
 
 echo "Creating hardware-configuration.nix file"
 nixos-generate-config --root /mnt
 
-echo "Manually configure system, user, and hardware files for $userName specialization"
-echo "After that run 'nixos-install', and then run this script again, while specifying the next user"
-echo "If all users have been configured. 'reboot' system"
+echo "Run 'nixos-install' after checking '/etc/nixos/configuration.nix'"
+
+echo "If everything has been configured. 'reboot' system"

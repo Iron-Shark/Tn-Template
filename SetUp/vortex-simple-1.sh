@@ -26,30 +26,30 @@ pvcreate /dev/nvme0n1p3
 vgcreate pool /dev/nvme0n1p3
 
 echo "Creating Logical Volumes"
-lvcreate -qL 150G -n root-que pool
-lvcreate -qL 150G -n root-xin pool
-lvcreate -qL 100G -n root-guest pool
-lvcreate -ql 100%FREE -n nix-store pool
+lvcreate -qL 150G -n pool-que pool
+lvcreate -qL 150G -n pool-xin pool
+lvcreate -qL 100G -n pool-guest pool
+lvcreate -ql 100%FREE -n pool-nix-store pool
 
 echo "Encrypting Logical Volumes"
 echo "!!REMEMBER TO CHECK CAPS AND NUMBER LOCK!!"
 echo "Encrypt que Volume"
-cryptsetup -qy luksFormat /dev/pool/root-que
+cryptsetup -qy luksFormat /dev/pool/pool-que
 echo "Encrypt xin Volume"
-cryptsetup -qy luksFormat /dev/pool/root-xin
+cryptsetup -qy luksFormat /dev/pool/pool-xin
 echo "Encrypt guest Volume"
-cryptsetup -qy luksFormat /dev/pool/root-guest
+cryptsetup -qy luksFormat /dev/pool/pool-guest
 echo "Encrypt nix-store Volume, use guest Password"
-cryptsetup -qy luksFormat /dev/pool/nix-store
+cryptsetup -qy luksFormat /dev/pool/pool-nix-store
 
 echo "Adding additional keys to nix-store Volume"
 echo "Add que User Password"
-cryptsetup luksAddKey /dev/pool/nix-store
+cryptsetup luksAddKey /dev/pool/pool-nix-store
 echo "Add xin User Password"
-cryptsetup luksAddKey /dev/pool/nix-store
+cryptsetup luksAddKey /dev/pool/pool-nix-store
 
 echo "Configuring nix-store Volume, use any password"
-cryptsetup luksOpen /dev/pool/nix-store nix-store
-mkfs.btrfs /dev/mapper/nix-store
+cryptsetup luksOpen /dev/pool/pool-nix-store pool-nix-store
+mkfs.btrfs -L nix-store /dev/mapper/pool-nix-store
 
 echo "System Partitions configured. Please run vortex-init-2.sh for each user specialization."
