@@ -12,11 +12,11 @@ parted /dev/nvme0n1 -- mklabel gpt
 
 printf "Creating Boot Partition"
 parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
-parted /dev/nvme0n1 -- set 1 esp on
+parted /dev/nvme0n1p1 -- set 1 esp on
 mkfs.fat -F 32 -n boot /dev/nvme0n1p1
 
 printf "Creating SWAP Partition"
-parted /dev/nvme0n1 -- mkpart linux-swap 512MB 18GB
+parted /dev/nvme0n1 -- mkpart primary linux-swap 512MB 18GB
 mkswap -L swap /dev/nvme0n1p2
 swapon /dev/nvme0n1/by-label/swap
 
