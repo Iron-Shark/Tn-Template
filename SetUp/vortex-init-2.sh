@@ -7,40 +7,37 @@ if [[ $UID != 0 ]]; then
     exit 1
 fi
 
-echo "Please enter UserName of Specialization to be configured"
+printf "Please enter UserName of Specialization to be configured"
 echo -n "UserName: "
 read -r userName
 
-echo "Creating File System, and Mounting Root for user $userName"
-cryptsetup luksOpen /dev/pool/root-$userName crypto-$userName
-# add labels using the -L flag
-mkfs.btrfs /dev/mapper/crypto-$userName
+printf "Creating File System, and Mounting Root for user $userName"
+cryptsetup luksOpen /dev/pool/pool-$userName crypto-$userName
+mkfs.btrfs -L root-$userName /dev/mapper/crypto-$userName
 
-echo "Creating Root Sub-volumes for user $userName"
+printf "Creating Root Sub-volumes for user $userName"
 # replace this with mount /dev/disk/by-label/labelName /mnt
 # not sure how it will work but might make things a bit simpler
-mount /dev/mapper/crypto-$userName /mnt
-btrfs subvolume create /mnt/nix
+mount -t btrfs /dev/mapper/crypto-$userName /mnt
 btrfs subvolume create /mnt/etc
 btrfs subvolume create /mnt/log
 btrfs subvolume create /mnt/root
 btrfs subvolume create /mnt/home
 umount /mnt
 
-echo "Mounting Sub-Volumes for $userName"
+printf "Mounting Sub-Volumes for $userName"
 mount -t tmpfs -o mode=755 none /mnt
 mkdir -p /mnt/{boot,nix,etc,var/log,root,home}
-# use the file system label here
-mount /dev/nvme0n1p1 /mnt/boot
-mount -o subvol=nix,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/nix
+mount /dev/nvme0n1/by-label/boot /mnt/boot
+mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/nix-store /mnt/nix
 mount -o subvol=etc,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/etc
 mount -o subvol=log,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/var/log
 mount -o subvol=root,compress-force=zstd,noatime /dev/mapper/crypto-$userName /mnt/root
 mount -o subvol=home,compress-force=zstd /dev/mapper/crypto-$userName /mnt/home
 
-echo "Creating hardware-configuration.nix file"
+printf "Creating hardware-configuration.nix file"
 nixos-generate-config --root /mnt
 
-echo "Manually configure system, user, and hardware files for $userName specialization"
-echo "After that run 'nixos-install', and then run this script again, while specifying the next user"
-echo "If all users have been configured. 'reboot' system"
+printf "Run 'nixos-install' after checking '/etc/nixos/configuration.nix'"
+
+printf "If everything has been configured. 'reboot' system"
