@@ -29,39 +29,12 @@ echo "Formatting Swap Partition"
 mkswap -L swap /dev/nvme0n1p2
 
 echo "Formatting Main Partition"
-cryptsetup --verify-passphrase -v luksFormat nvme0n1p3
-cryptsetup open nvme0n1p3 crypto-root
-mkfs.btrfs /dev/mapper/crypto-root
+mkfs.ext4 -L nixos /dev/nvme0n1p3
 
 echo "Mounting Main File System"
-mount -t btrfs /dev/mapper/crypto-root /mnt
+mount /dev/disk/by-label/nixos /mnt
 
-echo "Creating Main File System Sub-Volumes"
-btrfs subvolume create /mnt/root
-btrfs subvolume create /mnt/home
-btrfs subvolume create /mnt/nix # This may be removed latter for hard user separation.
-btrfs subvolume create /mnt/persist
-btrfs subvolume create /mnt/log
-
-echo "Taking System Snapshot"
-btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
-umount /mnt
-
-echo "Mounting File System"
-mount -o subvol=root,compress=zstd,noatime /dev/mapper/crypto-root /mnt
-
-mkdir /mnt/home
-mount -o subvol=home,compress=zstd,noatime /dev/mapper/crypto-root /mnt/home
-
-mkdir /mnt/nix
-mount -o subvol=nix,compress=zstd,noatime /dev/mapper/crypto-root /mnt/nix # if replaced by a shared nix-store partition. Remove the subvol argument
-
-mkdir /mnt/persist
-mount -o subvol=persist,compress=zstd,noatime /dev/mapper/crypto-root /mnt/persist
-
-mkdir -p /mnt/var/log
-mount -o subvol=log,compress=zstd,noatime /dev/mapper/crypto-root /mnt/var/log
-
+echo "Mounting Boot File System"
 mkdir -p /mnt/boot
 mount /dev/disk/by-label/boot /mnt/boot
 
@@ -70,3 +43,8 @@ swapon /dev/nvme0n1p2
 
 echo "Generating System Config"
 nixos-generate-config --root /mnt
+
+echo "Installing System"
+nixos-install
+
+echo "System has been installed. Reboot when ready."
