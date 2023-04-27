@@ -70,8 +70,3 @@ swapon /dev/nvme0n1p2
 
 echo "Generating System Config"
 nixos-generate-config --root /mnt
-
-echo "Installing System"
-nixos-install
-
-echo "System has been installed. Reboot when ready."
