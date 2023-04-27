@@ -47,4 +47,4 @@ nixos-generate-config --root /mnt
 # Install System
 nixos-install
 
-Printf "System has been installed. Reboot when ready."
+echo "System has been installed. Reboot when ready."
