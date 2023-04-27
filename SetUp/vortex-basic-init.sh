@@ -27,6 +27,7 @@ parted /dev/nvme0n1 -- mkpart primary 18GB 100%
 
 printf "Creating and Mounting File System"
 mkfs.ext4 -L nixos /dev/nvme0n1p3
+sleep 3s #adding this to see if it fixed the device not found error.
 mount /dev/disk/by-label/nixos /mnt
 mkdir -p /mnt/boot
 mount /dev/disk/by-label/boot /mnt/boot
