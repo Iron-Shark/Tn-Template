@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file is a script based solely off of the installation instructions from the NixOS manual.
+# This file is a script based off of the installation instructions from the NixOS manual.
 
 # Ensures the entire script is run as root.
 if [[ $UID != 0 ]]; then
