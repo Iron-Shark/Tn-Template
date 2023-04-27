@@ -29,7 +29,7 @@ echo "Formatting Swap Partition"
 mkswap -L swap /dev/nvme0n1p2
 
 echo "Formatting Main Partition"
-cryptsetup --verify-passphrase -q -v luksFormat nvme0n1p3
+cryptsetup --verify-passphrase -v luksFormat nvme0n1p3
 cryptsetup open nvme0n1p3 crypto-root
 mkfs.btrfs /dev/mapper/crypto-root
 
