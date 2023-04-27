@@ -20,16 +20,16 @@ mkfs.fat -F 32 -n boot /dev/nvme0n1p1
 printf "Creating SWAP Partition"
 parted /dev/nvme0n1 -- mkpart primary linux-swap 512MB 18GB
 mkswap -L swap /dev/nvme0n1p2
-swapon /dev/nvme0n1p2/by-label/swap
+swapon /dev/nvme0n1p2
 
 printf "Creating main System Partition"
 parted /dev/nvme0n1 -- mkpart primary 18GB 100%
 
 printf "Creating and Mounting File System"
 mkfs.ext4 -L nixos /dev/nvme0n1p3
-mount /dev/nvme0n1p3/by-label/nixos /mnt
+mount /dev/disk/by-label/nixos /mnt
 mkdir -p /mnt/boot
-mount /dev/nvme0n1p3/by-label/boot /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
 
 printf "Building System Configuration"
 nixos-generate-config --root /mnt
