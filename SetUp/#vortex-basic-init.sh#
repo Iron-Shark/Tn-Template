@@ -22,14 +22,14 @@ parted /dev/nvme0n1 -- mkpart primary linux-swap 512MB 18GB
 echo "Creating Main Partition"
 parted /dev/nvme0n1 -- mkpart primary 18GB 100%
 
+echo "Formatting Main Partition"
+mkfs.ext4 -L nixos /dev/nvme0n1p3
+
 echo "Formatting Boot Partition"
-mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+mkfs.fat -F 32 -n boot /dev/nvme0n1p3
 
 echo "Formatting Swap Partition"
 mkswap -L swap /dev/nvme0n1p2
-
-echo "Formatting Main Partition"
-mkfs.ext4 -L nixos /dev/nvme0n1p3
 
 echo "Mounting Main File System"
 mount /dev/disk/by-label/nixos /mnt
