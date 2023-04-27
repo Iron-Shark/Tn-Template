@@ -29,8 +29,8 @@ echo "Formatting Swap Partition"
 mkswap -L swap /dev/nvme0n1p2
 
 echo "Formatting Main Partition"
-cryptsetup -qyv luksFormat nvme0n1p3
-cryptsetup open nvme0n1p3 crypto-root
+cryptsetup -qyv luksFormat /dev/nvme0n1p3
+cryptsetup open /dev/nvme0n1p3 crypto-root
 mkfs.btrfs /dev/mapper/crypto-root
 
 echo "Mounting Main File System"
