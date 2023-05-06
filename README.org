@@ -318,11 +318,3 @@ After all specializations are configured reboot the system.
 
 **** Partitioning and Formatting
 - Largely the same as a simplified form of vortex-setup-1.sh
-
-** TODO Read Nixos Installation instructions
-
-*** TODO Find out how sharing a boot volume between specializations works.
-
-** TODO Preform a basic non-gui install with no lvm
-
-** TODO Convert that basic non-gui install to use specializations
