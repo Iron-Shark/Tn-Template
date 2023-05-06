@@ -29,7 +29,7 @@ mkswap -L swap /dev/nvme0n1p2
 #-------------------------------------------
 echo "Creating LVM for user partitions"
 pvcreate /dev/nvme0n1p3
-vgcreate pool dev/nvme0n1
+vgcreate pool /dev/nvme0n1p3
 
 lvcreate -L 50G -n nix-store pool
 lvcreate -L 180G -n root-que pool
