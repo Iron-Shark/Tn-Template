@@ -37,20 +37,26 @@ lvcreate -L 180G -n root-xin pool
 lvcreate -l 100%FREE -n root-guest pool
 
 echo "Encrypting Logical Volumes"
-echo -eqy "Create password for root-que"
-cryptsetup luksFormat /dev/pool/root-que
-echo -eqy "Add Que password to Nix-store"
-cryptsetup luksFormat /dev/pool/nix-store
-echo -eqy "Create password for root-xin"
-cryptsetup luksFormat /dev/pool/root-xin
-echo -eqy "Add Xin password to Nix-store"
-cryptsetup luksAddKey /dev/pool/nix-store
-echo -eqy "Create password for root-guest"
+
+echo -e "Create password for root-que"
+cryptsetup -qy luksFormat /dev/pool/root-que
+
+echo -e "Add Que password to Nix-store"
+cryptsetup -qy luksFormat /dev/pool/nix-store
+
+echo -e "Create password for root-xin"
+cryptsetup -qy luksFormat /dev/pool/root-xin
+
+echo -e "Add Xin password to Nix-store"
+cryptsetup -qy luksAddKey /dev/pool/nix-store
+
+echo -e "Create password for root-guest"
 echo "Use Guest Pin for Password"
-cryptsetup luksFormat /dev/pool/root-guest
-echo -eqy "Add Guest password to Nix-store"
-echo "Use Guest Pin for Password"
-cryptsetup luksAddKey /dev/pool/nix-store
+cryptsetup -qy luksFormat /dev/pool/root-guest
+
+echo -e "Add Guest password to Nix-store"
+echo "Add Guest Pin to Nix-Store"
+cryptsetup -qy luksAddKey /dev/pool/nix-store
 
 echo "Open Encrypted Volumes"
 echo -e "Enter password for root-que"
