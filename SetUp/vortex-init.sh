@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# This file is a script based solely off of the installation instructions from the NixOS manual.
-
 # Ensures the entire script is run as root.
 if [[ $UID != 0 ]]; then
     echo "Please run this script with sudo:"
@@ -28,48 +26,49 @@ mkfs.fat -F 32 -n boot /dev/nvme0n1p1
 echo "Formatting Swap Partition"
 mkswap -L swap /dev/nvme0n1p2
 
-echo "Formatting Main Partition"
-cryptsetup -qyv luksFormat /dev/nvme0n1p3
-cryptsetup open /dev/nvme0n1p3 crypto-root
-mkfs.btrfs /dev/mapper/crypto-root
+#-------------------------------------------
+echo "Creating LVM for user partitions"
+pvcreate /dev/nvme0n1p3
+vgcreate pool dev/nvme0n1p3
 
-echo "Mounting Main File System"
-mount -t btrfs /dev/mapper/crypto-root /mnt
+lvcreate -L 50G -n nix-store pool
+lvcreate -L 200G -n root-que pool
+lvcreate -L 200G -n root-xin pool
+lvcreate -l 100%FREE -n root-guest pool
 
-echo "Creating Main File System Sub-Volumes"
-btrfs subvolume create /mnt/root
-btrfs subvolume create /mnt/home
-btrfs subvolume create /mnt/nix # This may be removed latter for hard user separation.
-btrfs subvolume create /mnt/persist
-btrfs subvolume create /mnt/log
+echo "Encrypting Logical Volumes"
+echo -e "Create password for root-que"
+cryptsetup luksFormat /dev/pool/root-que
+echo -e "Create password for root-xin"
+cryptsetup luksFormat /dev/pool/root-xin
+echo -e "Create password for root-guest"
+echo "Use Guest Pin for Password"
+cryptsetup luksFormat /dev/pool/root-guest
+echo -e "Add Que password to Nix-store"
+cryptsetup luksFormat /dev/pool/nix-store
+echo -e "Add Xin password to Nix-store"
+cryptsetup luksAddKey /dev/pool/nix-store
+echo -e "Add Guest password to Nix-store"
+echo "Use Guest Pin for Password"
+cryptsetup luksAddKey /dev/pool/nix-store
 
-echo "Taking System Snapshot"
-btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
-umount /mnt
+echo "Open Encrypted Volumes"
+echo -e "Enter password for root-que"
+cryptsetup luksOpen /dev/pool/root-que crypto-que
+echo -e "Enter password for root-xin"
+cryptsetup luksOpen /dev/pool/root-xin crypto-xin
+echo -e "Enter password for root-guest"
+cryptsetup luksOpen /dev/pool/root-guest crypto-guest
+echo -e "Enter password for nix-store"
+cryptsetup luksOpen /dev/pool/nix-store nix-store
 
-echo "Mounting File System"
-mount -o subvol=root,compress=zstd,noatime /dev/mapper/crypto-root /mnt
-
-mkdir /mnt/home
-mount -o subvol=home,compress=zstd,noatime /dev/mapper/crypto-root /mnt/home
-
-mkdir /mnt/nix
-mount -o subvol=nix,compress=zstd,noatime /dev/mapper/crypto-root /mnt/nix # if replaced by a shared nix-store partition. Remove the subvol argument
-
-mkdir /mnt/persist
-mount -o subvol=persist,compress=zstd,noatime /dev/mapper/crypto-root /mnt/persist
-
-mkdir -p /mnt/var/log
-mount -o subvol=log,compress=zstd,noatime /dev/mapper/crypto-root /mnt/var/log
-
-mkdir -p /mnt/boot
-mount /dev/disk/by-label/boot /mnt/boot
+echo "Formatting Root Partitions"
+mkfs.ext4 /dev/mapper/crypto-que
+mkfs.ext4 /dev/mapper/crypto-xin
+mkfs.ext4 /dev/mapper/crypto-guest
+mkfs.ext4 /dev/mapper/nix-store
 
 echo "Activating Swap"
 swapon /dev/nvme0n1p2
 
-echo "Generating System Config"
-nixos-generate-config --root /mnt
-
-echo 'Add "neededForBoot = true;" to "fileSystems."/var/log" =" of "hardware-configuration.nix"'
-echo 'Then run "nixos-install", and "reboot"'
+echo -e "Run vortex-install.sh for each user"
