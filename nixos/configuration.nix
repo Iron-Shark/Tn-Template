@@ -1,8 +1,8 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
   imports = [
-    ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
+    ./hardware-configuration.nix
   ];
 
   nixpkgs = {
