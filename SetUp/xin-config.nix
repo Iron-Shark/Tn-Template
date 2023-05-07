@@ -1,5 +1,5 @@
 specialisation = {
-  configuration = {
+  xin.configuration = {
     system.nixos.tags = [ "xin" ];
     services.xserver = {
       autorun = true;
