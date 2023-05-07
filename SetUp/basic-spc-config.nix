@@ -94,15 +94,15 @@
   '';
         users.mutableUsers = false;
         users.users.root = {
-          password = "root";
+          initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
         };
-          users.users.que = {
-            isNormalUser = true;
-            description = "Que";
-            uid = 1001;
-            extraGroups = [ "networkmanager" "wheel" ];
-            initialHashedPassword = "que";
-          };
+        users.users.que = {
+          isNormalUser = true;
+          description = "Que";
+          uid = 1001;
+          extraGroups = [ "networkmanager" "wheel" ];
+          initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+        };
       };
       xin.configuration = {
         system.nixos.tags = [ "xin" ];
@@ -132,14 +132,14 @@
     alias logout='sudo kill -9 -1'
   '';
         users.users.root = {
-          password = "root";
+          initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
         };
         users.users.xin = {
           isNormalUser = true;
           description = "Xin";
           uid = 1002;
           extraGroups = [ "networkmanager" "wheel" ];
-          initialHashedPassword = "xin";
+          initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
         };
       };
       guest.configuration = {
@@ -172,7 +172,7 @@
           description = "Guest";
           uid = 1003;
           extraGroups = [ "networkmanager" ];
-          initialHashedPassword = "guest";
+          initialHashedPassword = "$6$GixqRZ1inXxpl7gA$ZYKTjsfJYowMuLMO329FSHc5hPHDjvgGfJVequ4BWUQx3hf85baGkSiBKAwr0x/tc2qf1dVZZq4.3yTxmddqb/";
         };
       };
     };
