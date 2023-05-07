@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -en \"UserName: \"
+echo -en "UserName: "
 read -r name
 
 echo -e "Mounting Filesystems"
