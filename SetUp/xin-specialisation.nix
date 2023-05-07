@@ -2,6 +2,7 @@
 
     specialisation.xin.configuration = {
       system.nixos.tags = [ "xin" ];
+
       services.xserver = {
         autorun = true;
         layout = "us";
@@ -13,23 +14,28 @@
           autoLogin.enable = true;
           autoLogin.user = "xin";
         };
+
       };
       systemd.services = {
         "getty@tty1".enable = false;
         "autovt@tty1".enable = false;
       };
+
       environment.systemPackages = with pkgs; [
         firefox
         git
         vim
       ];
+
       environment.interactiveShellInit = ''
     alias lx='ls -la'
     alias logout='sudo kill -9 -1'
   '';
+
       users.users.root = {
         initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
       };
+
       users.users.xin = {
         isNormalUser = true;
         description = "Xin";

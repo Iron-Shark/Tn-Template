@@ -2,7 +2,7 @@
 
   specialisation.que.configuration = {
     system.nixos.tags = [ "que" ];
-    # xserver settings go here. Unless they can be configured with home-manager
+
     services.xserver = {
       autorun = true;
       layout = "us";
@@ -15,10 +15,12 @@
         autoLogin.user = "que";
       };
     };
+
     systemd.services = {
       "getty@tty1".enable = false;
       "autovt@tty1".enable = false;
     };
+
     environment.systemPackages = with pkgs; [
       firefox
       git
@@ -28,10 +30,11 @@
     alias lx='ls -la'
     alias logout='sudo kill -9 -1'
   '';
-    users.mutableUsers = false;
+
     users.users.root = {
       initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
+
     users.users.que = {
       isNormalUser = true;
       description = "Que";
