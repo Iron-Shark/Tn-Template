@@ -92,12 +92,17 @@
     alias lx='ls -la'
     alias logout='sudo kill -9 -1'
   '';
-        users.users.que = {
-          isNormalUser = true;
-          description = "Que";
-          uid = 1001;
-          extraGroups = [ "networkmanager" "wheel" ];
+        users.mutableUsers = false;
+        users.users.root = {
+          password = "root";
         };
+          users.users.que = {
+            isNormalUser = true;
+            description = "Que";
+            uid = 1001;
+            extraGroups = [ "networkmanager" "wheel" ];
+            initialHashedPassword = "que"
+          };
       };
       xin.configuration = {
         system.nixos.tags = [ "xin" ];
@@ -126,11 +131,15 @@
     alias lx='ls -la'
     alias logout='sudo kill -9 -1'
   '';
+        users.users.root = {
+          password = "root";
+        };
         users.users.xin = {
           isNormalUser = true;
           description = "Xin";
           uid = 1002;
           extraGroups = [ "networkmanager" "wheel" ];
+          initialHashedPassword = "xin"
         };
       };
       guest.configuration = {
@@ -163,6 +172,7 @@
           description = "Guest";
           uid = 1003;
           extraGroups = [ "networkmanager" ];
+          initialHashedPassword = "guest"
         };
       };
     };
