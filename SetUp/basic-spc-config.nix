@@ -101,7 +101,7 @@
             description = "Que";
             uid = 1001;
             extraGroups = [ "networkmanager" "wheel" ];
-            initialHashedPassword = "que"
+            initialHashedPassword = "que";
           };
       };
       xin.configuration = {
@@ -139,7 +139,7 @@
           description = "Xin";
           uid = 1002;
           extraGroups = [ "networkmanager" "wheel" ];
-          initialHashedPassword = "xin"
+          initialHashedPassword = "xin";
         };
       };
       guest.configuration = {
@@ -172,7 +172,7 @@
           description = "Guest";
           uid = 1003;
           extraGroups = [ "networkmanager" ];
-          initialHashedPassword = "guest"
+          initialHashedPassword = "guest";
         };
       };
     };
