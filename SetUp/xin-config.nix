@@ -1,4 +1,3 @@
-specialisation = {
   xin.configuration = {
     system.nixos.tags = [ "xin" ];
     services.xserver = {
@@ -33,4 +32,3 @@ specialisation = {
       extraGroups = [ "networkmanager" "wheel" ];
     };
   };
-};

@@ -1,4 +1,3 @@
-specialisation = {
   guest.configuration = {
     system.nixos.tags = [ "guest" ];
     services.xserver = {
@@ -30,5 +29,4 @@ specialisation = {
       uid = 1003;
       extraGroups = [ "networkmanager" ];
     };
-};
 };

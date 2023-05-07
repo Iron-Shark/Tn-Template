@@ -1,4 +1,3 @@
-specialisation = {
   que.configuration = {
     system.nixos.tags = [ "que" ];
     # xserver settings go here. Unless they can be configured with home-manager
@@ -34,4 +33,3 @@ specialisation = {
       extraGroups = [ "networkmanager" "wheel" ];
     };
   };
-};

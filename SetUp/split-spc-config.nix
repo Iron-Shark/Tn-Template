@@ -1,9 +1,6 @@
 { config, pkgs, ... }: {
 
   imports = [
-    ./guest-config.nix
-    ./que-config.nix
-    ./xin-config.nix
     ./hardware-configuration.nix
     # ./que-hardware.nix
     # ./xin-hardware.nix
@@ -67,5 +64,10 @@
       LC_TELEPHONE = "en_US.UTF-8";
       LC_TIME = "en_US.UTF-8";
     };
+  };
+  specialisation = {
+    que = import ./que-config.nix;
+    xin = import ./xin-config.nix;
+    guest = import ./guest-config.nix;
   };
 }
