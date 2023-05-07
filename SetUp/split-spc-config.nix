@@ -1,9 +1,10 @@
 { config, pkgs, ... }: {
 
   imports = [
-    ./que-hardware.nix
-    ./xin-hardware.nix
-    ./guest-hardware.nix
+    ./hardware-configuration.nix
+    # ./que-hardware.nix
+    # ./xin-hardware.nix
+    # ./guest-hardware.nix
   ];
 
   system.stateVersion = "22.05";
