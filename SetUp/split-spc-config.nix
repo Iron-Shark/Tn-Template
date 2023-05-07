@@ -11,9 +11,9 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix = {
     package = pkgs.nixFlakes;
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
   hardware.enableAllFirmware = true;
@@ -43,6 +43,7 @@
         enable = true;
         support32Bit = true;
       };
+    };
   };
 
   sound.enable = true;
