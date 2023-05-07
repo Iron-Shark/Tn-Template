@@ -11,5 +11,5 @@ mkdir /mnt/nix/config
 mount --bind /mnt/nix/config /mnt/etc/nixos
 mount /dev/nvme0n1p1 /mnt/boot
 
-echo -e "Generating System Configuration for $name"
-nixos-generate-config --root /mnt
+echo -e "Generate System configuration using nixos-generate-config --root /mnt"
+echo "Or run nixos-install"
