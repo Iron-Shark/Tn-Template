@@ -76,7 +76,7 @@
           displayManager = {
             gdm.enable = true;
             autoLogin.enable = true;
-            autoLogin.user = "que"
+            autoLogin.user = "que";
           };
         };
         systemd.services = {
@@ -110,7 +110,7 @@
           displayManager = {
             gdm.enable = true;
             autoLogin.enable = true;
-            autoLogin.user = "xin"
+            autoLogin.user = "xin";
           };
         };
         systemd.services = {
@@ -142,7 +142,7 @@
           displayManager = {
             gdm.enable = true;
             autoLogin.enable = true;
-            autoLogin.user = "guest"
+            autoLogin.user = "guest";
           };
         };
         systemd.services = {
