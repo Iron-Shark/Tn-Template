@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+({ lib, config, pkgs, ...}: {
+  config = lib.mkIf (config.specialisation != {}) {
 
     services.xserver = {
       autorun = true;
@@ -37,5 +38,5 @@
       extraGroups = [ "networkmanager" "wheel" ];
       initialHashedPassword = "$6$GixqRZ1inXxpl7gA$ZYKTjsfJYowMuLMO329FSHc5hPHDjvgGfJVequ4BWUQx3hf85baGkSiBKAwr0x/tc2qf1dVZZq4.3yTxmddqb/";
     };
-
-}
+  };
+})
