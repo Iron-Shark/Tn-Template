@@ -68,7 +68,6 @@
   environment.systemPackages = with pkgs; [
     # Web Tools
     firefox  # Must stay at system Level
-    gitFull
     vim  # Must stay at system Level
     pulseaudio
   ];
@@ -89,6 +88,7 @@
     description = "Que";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      git
     ];
   };
 
