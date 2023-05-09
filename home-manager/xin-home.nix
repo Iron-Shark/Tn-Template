@@ -18,7 +18,11 @@
     homeDirectory = "/home/xin";
   };
 
-  home.packages = with pkgs; [ emacs ];
+  home.packages = with pkgs; [
+    git
+    vim
+    firefox
+  ];
 
   programs.home-manager.enable = true;
 
