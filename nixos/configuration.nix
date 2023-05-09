@@ -3,9 +3,9 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
-    ../users/que-configuration.nix
-    ../users/xin-configuration.nix
-    ../users/guest-configuration.nix
+    ./que-configuration.nix
+    ./xin-configuration.nix
+    ./guest-configuration.nix
   ];
 
   system.stateVersion = "22.05";
