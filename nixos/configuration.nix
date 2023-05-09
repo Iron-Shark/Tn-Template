@@ -3,7 +3,12 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
+    ../users/que-configuration.nix
+    ../users/xin-configuration.nix
+    ../users/guest-configuration.nix
   ];
+
+  system.stateVersion = "22.05";
 
   nixpkgs = {
     overlays = [
@@ -17,59 +22,62 @@
   };
 
   nix = {
+    package = pkgs.nixFlakes;
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-    settings = {
-      experimental-features = "nix-command flakes";
-      auto-optimise-store = true;
-    };
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  networking.hostName = "TEST-Name";
-  networking.networkmanager.enable = true;
+  users.mutableUsers = false;
 
+  hardware.enableAllFirmware = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.initrd.preLVMCommands = "lvm vgchange -ay";
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-  ];
+  security.sudo.wheelNeedsPassword = false;
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      que = import ../home-manager/vm.nix;
+  networking = {
+    hostName = "vortex";
+    networkmanager.enable = true;
+  };
+
+  services = {
+    printing.enable = true;
+    xserver = {
+      enable = true;
+      libinput.enable = true;
     };
-  };
-
-  users.users = {
-    que = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" ];
-     };
-  };
-
-  time.timeZone = "America/Detroit";
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+    };
   };
 
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+
+  time.timeZone = "America/Detroit";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
   };
 
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
-
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "22.11";
 }
