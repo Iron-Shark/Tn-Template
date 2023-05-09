@@ -1,4 +1,4 @@
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ inputs, outputs, lib, config, pkgs, callPackage, ... }: {
 
   specialisation.xin.configuration = {
     system.nixos.tags = [ "xin" ];
@@ -45,7 +45,10 @@
       };
     };
 
-    services.emacs.enable = true;
+    services.emacs = {
+      enable = true;
+      package = pkgs.emacsUnstable;
+    };
     environment.systemPackages = [
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacsUnstable;
