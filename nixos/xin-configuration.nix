@@ -51,6 +51,24 @@
       };
     };
 
-  };
+    services.emacs.enable = true;
+    environment.systemPackages = [
+      (emacsWithPackagesFromUsePackage {
+        package = pkgs.emacsUnstable;
+        # Your Emacs config file. Org mode babel files are also
+        # supported.
+        # NB: Config files cannot contain unicode characters, since
+        #     they're being parsed in nix, which lacks unicode
+        #     support.
+        # config = ./emacs.org;
+        config = ./emacs.el;
+        defaultInitFile = true;
+        alwaysEnsure = true;
+        # extraEmacsPackages = epkgs: [
+        #   epkgs.packageName
+        # ];
+      })
+    ];
 
-  }
+  };
+}
