@@ -30,7 +30,7 @@
       homeManagerModules = import ./modules/home-manager;
 
       nixosConfigurations = {
-        TEST-Name = nixpkgs.lib.nixosSystem {
+        vortex = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/configuration.nix
