@@ -28,16 +28,24 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  users.mutableUsers = false;
-
   hardware.enableAllFirmware = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.initrd.preLVMCommands = "lvm vgchange -ay";
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    initrd.preLVMCommands = "lvm vgchange -ay";
+    loader = {
+      systemd-boot.enable = true;
+      efi. = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+    };
+  };
 
-  security.sudo.wheelNeedsPassword = false;
+  users.mutableUsers = false;
+  security = {
+    sudo.wheelNeedsPassword = false;
+    rtkit.enable = true;
+  };
 
   networking = {
     hostName = "vortex";
@@ -62,7 +70,6 @@
 
   sound.enable = true;
   hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
 
   time.timeZone = "America/Detroit";
   i18n = {
@@ -79,5 +86,4 @@
       LC_TIME = "en_US.UTF-8";
     };
   };
-
 }
