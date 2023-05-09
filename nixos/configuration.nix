@@ -29,7 +29,7 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  powermanagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware = {
     enableAllFirmware = true;
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
