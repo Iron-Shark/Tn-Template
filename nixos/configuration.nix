@@ -19,7 +19,7 @@
     config = {
       allowUnfree = true;
     };
-    hostPlatform = lib.mkDefault true;
+    hostPlatform = lib.mkDefault "x86_64-linux";
   };
 
   nix = {
