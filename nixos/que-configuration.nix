@@ -42,13 +42,12 @@
       extraGroups = [ "networkmanager" "wheel" ];
       initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
-  };
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      que = import ../home-manager/que-home.nix;
+    home-manager = {
+      extraSpecialArgs = { inherit inputs outputs; };
+      users = {
+        que = import ../home-manager/que-home.nix;
+      };
     };
-  };
 
 }
