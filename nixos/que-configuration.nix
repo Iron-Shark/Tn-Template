@@ -49,5 +49,5 @@
         que = import ../home-manager/que-home.nix;
       };
     };
-
+  };
 }
