@@ -19,6 +19,7 @@
     config = {
       allowUnfree = true;
     };
+    hostPlatform = lib.mkDefault true;
   };
 
   nix = {
@@ -28,10 +29,21 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  hardware.enableAllFirmware = true;
+  powermanagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware = {
+    enableAllFirmware = true;
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
+
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    initrd.preLVMCommands = "lvm vgchange -ay";
+    kernelModules = [ "kvm-intel" ];
+    extraModulesPackages = [ ];
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+      kernelModules = [ ];
+      preLVMCommands = "lvm vgchange -ay";
+    };
     loader = {
       systemd-boot.enable = true;
       efi. = {
@@ -50,6 +62,7 @@
   networking = {
     hostName = "vortex";
     networkmanager.enable = true;
+    useDHCP = lib.mkDefault true;
   };
 
   services = {
