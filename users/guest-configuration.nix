@@ -1,4 +1,4 @@
-{ inputs, outputs, lib, config, pkgs, ... }: {
+({ inputs, outputs, lib, config, pkgs, ... }: {
   config = lib.mkIf (config.specialisation != {}) {
 
     services.xserver = {
