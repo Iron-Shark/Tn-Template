@@ -33,7 +33,7 @@
     users.users.xin = {
       isNormalUser = true;
       description = "Xin";
-      uid = 1002;
+      uid = 1003;
       extraGroups = [ "networkmanager" "wheel" ];
       hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
