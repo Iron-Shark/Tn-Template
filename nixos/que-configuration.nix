@@ -38,6 +38,7 @@
     users.users.que = {
       isNormalUser = true;
       description = "Que";
+      uid = 1003;
       extraGroups = [ "networkmanager" "wheel" ];
       #     initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
