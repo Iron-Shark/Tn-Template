@@ -27,7 +27,7 @@
   '';
 
     users.users.root = {
-      initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+      hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
 
     users.users.xin = {
@@ -35,7 +35,7 @@
       description = "Xin";
       uid = 1002;
       extraGroups = [ "networkmanager" "wheel" ];
-      initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+      hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
 
     home-manager = {
@@ -47,25 +47,17 @@
 
     services.emacs = {
       enable = true;
-      package = pkgs.emacsUnstable;
-    };
-    environment.systemPackages = [
-      (emacsWithPackagesFromUsePackage {
-        package = pkgs.emacsUnstable;
-        # Your Emacs config file. Org mode babel files are also
-        # supported.
-        # NB: Config files cannot contain unicode characters, since
-        #     they're being parsed in nix, which lacks unicode
-        #     support.
-        # config = ./emacs.org;
+      install = true;
+      defaultEditor = true;
+      package = (pkgs.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
-        defaultInitFile = true;
+        package = pkgs.emacsUnstable;
         alwaysEnsure = true;
-        # extraEmacsPackages = epkgs: [
-        #   epkgs.packageName
-        # ];
-      })
-    ];
+        extraEmacsPackages = epkgs: [
+          epkgs.use-package
+        ];
+      });
+    };
 
-  };
-}
+    };
+    }
