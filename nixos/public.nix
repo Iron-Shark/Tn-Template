@@ -1,7 +1,7 @@
 { inputs, outputs, lib, config, pkgs, callPackage, ... }: {
 
-  specialisation.xin.configuration = {
-    system.nixos.tags = [ "xin" ];
+  specialisation.public.configuration = {
+    system.nixos.tags = [ "Public" ];
 
     services.xserver = {
       autorun = true;
@@ -26,25 +26,6 @@
     alias logout='sudo kill -9 -1'
   '';
 
-    # users.users.root = {
-    #   hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
-    # };
-
-    users.users.xin = {
-      isNormalUser = true;
-      description = "Xin";
-      uid = 1001;
-      extraGroups = [ "networkmanager" "wheel" ];
-      #passwordFile = "./xin-secrets.nix"
-      # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
-    };
-
-    home-manager = {
-      extraSpecialArgs = { inherit inputs outputs; };
-      users = {
-        xin = import ../home-manager/xin-home.nix;
-      };
-    };
 
     services.emacs = {
       enable = true;

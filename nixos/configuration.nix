@@ -3,9 +3,9 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
-    ./que-configuration.nix
-    ./xin-configuration.nix
-    ./guest-configuration.nix
+    ./public.nix
+    ./private.nix
+    ./guest.nix
   ];
 
   system.stateVersion = "22.05";
@@ -99,4 +99,36 @@
       LC_TIME = "en_US.UTF-8";
     };
   };
-}
+
+  users.users.root = {
+    hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+  };
+
+  users.users = {
+    xin = {
+      isNormalUser = true;
+      description = "Xin";
+      uid = 1001;
+      extraGroups = [ "networkmanager" "wheel" ];
+      passwordFile = "./xin-secrets.nix"
+        # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+    };
+    guest = {
+      isNormalUser = true;
+      description = "Guest";
+      uid = 1002;
+      extraGroups = [ "networkmanager" ];
+      initialHashedPassword = "$6$GixqRZ1inXxpl7gA$ZYKTjsfJYowMuLMO329FSHc5hPHDjvgGfJVequ4BWUQx3hf85baGkSiBKAwr0x/tc2qf1dVZZq4.3yTxmddqb/";
+    };
+  };
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      xin = import ../home-manager/xin-home.nix;
+      que = import ../home-manager/que-home.nix;
+      guest = import ../home-manager/guest-home.nix;
+    };
+  };
+
+                     }
