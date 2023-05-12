@@ -27,15 +27,15 @@
     alias logout='sudo kill -9 -1'
   '';
 
-    users.users.root = {
-      initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
-    };
+    # users.users.root = {
+    #   initialHashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+    # };
 
     users.users.guest = {
       isNormalUser = true;
       description = "Guest";
-      extraGroups = [ "networkmanager" "wheel" ];
-      initialHashedPassword = "$6$GixqRZ1inXxpl7gA$ZYKTjsfJYowMuLMO329FSHc5hPHDjvgGfJVequ4BWUQx3hf85baGkSiBKAwr0x/tc2qf1dVZZq4.3yTxmddqb/";
+      extraGroups = [ "networkmanager" ];
+      #initialHashedPassword = "$6$GixqRZ1inXxpl7gA$ZYKTjsfJYowMuLMO329FSHc5hPHDjvgGfJVequ4BWUQx3hf85baGkSiBKAwr0x/tc2qf1dVZZq4.3yTxmddqb/";
     };
 
     home-manager = {

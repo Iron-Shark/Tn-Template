@@ -26,16 +26,16 @@
     alias logout='sudo kill -9 -1'
   '';
 
-    users.users.root = {
-      hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
-    };
+    # users.users.root = {
+    #   hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+    # };
 
     users.users.xin = {
       isNormalUser = true;
       description = "Xin";
       extraGroups = [ "networkmanager" "wheel" ];
-      passwordFile = "./xin-secrets.nix"
-        # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+      #passwordFile = "./xin-secrets.nix"
+      # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
 
     home-manager = {
