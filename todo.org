@@ -1,0 +1,9 @@
+* TODO Install Tn-Template on Voyager
+** TODO Manage Secrets using git crypt
+*** TODO Automatically encrypt ~.../Tn-Template/secrets~ with Git
+** TODO Nix Secrets
+*** DONE add user passwd files to ~/etc/secrets/$userName~
+*** DONE Create ~/etc/secrets~ file using nix
+*** DONE Create user password files for all ~$userNames~
+*** DONE Create ~.../Tn-Template/secrets/$userName~ for each user
+*** DONE Create ~.../Tn-Template/secrets~ file for all system secrets
