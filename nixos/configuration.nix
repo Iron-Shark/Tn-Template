@@ -54,6 +54,7 @@
 
   services = {
     printing.enable = true;
+    picom.enable = true;
     xserver = {
       enable = true;
       libinput.enable = true;
@@ -69,7 +70,7 @@
   };
 
   sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = true;
 
   time.timeZone = "America/Detroit";
   i18n = {
@@ -87,15 +88,38 @@
     };
   };
 
-  environment.etc = {
-    secrets.source = ../secrets;
+  environment = {
+    etc = {
+      secrets.source = ../secrets;
+    };
+    interactiveShellInit = ''
+  alias lx='ls -la'
+  alias rma='rm -rf'
+  alias power-off='sudo shutdown -h now'
+  alias logout='sudo kill -9 -1'
+  alias restart='sudo reboot'
+  alias eo='emacsclient -n'
+  alias seo='SUDO_EDITOR=\"emacsclient\" sudo -e'
+  alias voyager-rebuild='bash ~/.config/system-scripts/voyager-rebuild.sh'
+  alias voyager-upgrade='bash ~/.config/system-scripts/voyager-upgrade.sh'
+  alias voyager-rebuild-reboot='voyager-rebuild && reboot'
+  alias voyager-clean='sudo nix-collect-garbage --delete-old && voyager-rebuild'
+  alias voyager-clean-reboot='sudo nix-collect-garbage --delete-old && voyager-rebuild-reboot'
+'';
   };
 
+  fonts.fonts = with pkgs; [
+    nerdfonts
+    iosevka
+    overpass
+    fira-code
+    fira-go
+  ];
 
   users.users = {
     root = {
       passwordFile = "/etc/secrets/root-usrPasswd.nix";
-  };
+    };
     xin = {
       isNormalUser = true;
       description = "Xin";

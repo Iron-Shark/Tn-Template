@@ -1,43 +1,41 @@
 ({ inputs, outputs, lib, config, pkgs, ... }: {
   config = lib.mkIf (config.specialisation != {}) {
 
-    services.xserver = {
-      autorun = true;
-      layout = "us";
-      xkbVariant = "colemak_dh";
-      xkbOptions = "caps:escape";
-      desktopManager.gnome.enable = true;
-      displayManager = {
-        gdm.enable = true;
-        autoLogin.enable = true;
-        autoLogin.user = "xin";
+    services = {
+      unclutter-xfixes.enable = true;
+      xserver = {
+        autorun = true;
+        layout = "us";
+        xkbVariant = "colemak_dh";
+        xkbOptions = "caps:escape";
+        windowManager.exwm = {
+          enable = true;
+          enableDefaultConfig = false;
+        };
+        displayManager = {
+          sddm.enable = true;
+          sddm.autoNumlock = true;
+        };
       };
-
-    };
-    systemd.services = {
-      "getty@tty1".enable = false;
-      "autovt@tty1".enable = false;
-    };
-
-    environment.interactiveShellInit = ''
-    alias lx='ls -la'
-    alias logout='sudo kill -9 -1'
-  '';
-
-
-    services.emacs = {
-      enable = true;
-      install = true;
-      defaultEditor = true;
-      package = (pkgs.unstable.emacsWithPackagesFromUsePackage {
-        config = ./emacs.el;
-        package = pkgs.emacsUnstable;
-        alwaysEnsure = true;
-        extraEmacsPackages = epkgs: [
-          epkgs.use-package
+      cron = {
+        enable = true;
+        systemCronJobs = [
+          "*/5 * * * *      root    date >> /tmp/cron.log"
         ];
-      });
-    };
-
+      };
+      emacs = {
+        enable = true;
+        install = true;
+        defaultEditor = true;
+        package = (pkgs.unstable.emacsWithPackagesFromUsePackage {
+          config = ~/.config/init.el;
+          package = pkgs.emacsUnstable;
+          alwaysEnsure = true;
+          extraEmacsPackages = epkgs: [
+            epkgs.use-package
+          ];
+        });
+        };
+      };
     };
 })
