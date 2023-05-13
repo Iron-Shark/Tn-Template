@@ -4,7 +4,6 @@
     overlays = [
       outputs.overlays.additions
       outputs.overlays.modifications
-      outputs.overlays.unstable-packages
     ];
 
     config = {
@@ -18,7 +17,7 @@
     homeDirectory = "/home/guest";
   };
 
-  home.packages = with pkgs; [ emacs ];
+  home.packages = with pkgs; [ vim ];
 
   programs.home-manager.enable = true;
 

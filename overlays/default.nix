@@ -15,10 +15,20 @@
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
+  # unstable-packages = final: _prev: {
+  #   unstable = import inputs.nixpkgs-unstable {
+  #     system = final.system;
+  #     config.allowUnfree = true;
+  #   };
+  # };
+  # To enable this overlay add:
+  # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+  # to 'flake.nix'
+  # and
+  # outputs.overlays.unstable-packages
+  # to each home-manager and system configuration file
+
+
+
+
 }
