@@ -14,6 +14,7 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      inputs.emacs-community.overlay
     ];
     config = {
       allowUnfree = true;
