@@ -126,7 +126,6 @@
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       xin = import ../home-manager/xin-home.nix;
-      que = import ../home-manager/que-home.nix;
       guest = import ../home-manager/guest-home.nix;
     };
   };
