@@ -30,7 +30,7 @@
     };
   };
 
-  networking.hostName = "TEST-Name";
+  networking.hostName = "vortex";
   networking.networkmanager.enable = true;
 
   boot.loader.systemd-boot.enable = true;
