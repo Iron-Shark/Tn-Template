@@ -30,9 +30,6 @@
     };
   };
 
-  networking.hostName = "vortex";
-  networking.networkmanager.enable = true;
-
   boot.loader.systemd-boot.enable = true;
 
   security = {
@@ -97,7 +94,7 @@
     que = {
       isNormalUser = true;
       description = "Xin";
-      uid = 1001;
+      uid = 1003;
       extraGroups = [ "networkmanager" "wheel" ];
       hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
       };
