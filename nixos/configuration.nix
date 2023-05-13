@@ -110,8 +110,8 @@
       description = "Xin";
       uid = 1001;
       extraGroups = [ "networkmanager" "wheel" ];
-      passwordFile = "./xin-secrets.nix"
-        # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
+      passwordFile = "./xin-secrets.nix";
+      # hashedPassword = "$6$KY5i2kUTspBbJUVy$2P5N9ks4kNpW5iKRRCNUX9FmTvwUKC4mkPfpWchiBFMuBHHJoa2/le4H3KxhYGOs/w6d4nQeFJIz/s9XnCjIJ0";
     };
     guest = {
       isNormalUser = true;
