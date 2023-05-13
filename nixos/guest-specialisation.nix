@@ -1,5 +1,7 @@
-({ inputs, outputs, lib, config, pkgs, ... }: {
-  config = lib.mkIf (config.specialisation != {}) {
+{ inputs, outputs, lib, config, pkgs, ... }: {
+
+  specialisation.public.configuration = {
+    system.nixos.tags = [ "Guest" ];
 
     services.xserver = {
       autorun = true;
@@ -27,4 +29,4 @@
     alias logout='sudo kill -9 -1'
   '';
   };
-})
+}

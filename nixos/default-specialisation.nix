@@ -1,7 +1,5 @@
-{ inputs, outputs, lib, config, pkgs, callPackage, ... }: {
-
-  specialisation.public.configuration = {
-    system.nixos.tags = [ "Public" ];
+({ inputs, outputs, lib, config, pkgs, ... }: {
+  config = lib.mkIf (config.specialisation != {}) {
 
     services.xserver = {
       autorun = true;
@@ -42,4 +40,4 @@
     };
 
     };
-    }
+})
