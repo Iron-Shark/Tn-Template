@@ -1,13 +1,13 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
+  system.stateVersion = "22.11";  #22.05
+
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ./default-specialisation.nix
     ./guest-specialisation.nix
   ];
-
-  system.stateVersion = "22.05";
 
   nixpkgs = {
     overlays = [

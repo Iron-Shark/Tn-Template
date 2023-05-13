@@ -19,9 +19,7 @@
   };
 
   home.packages = with pkgs; [
-    git
-    vim
-    firefox
+    hello
   ];
 
   programs.home-manager.enable = true;

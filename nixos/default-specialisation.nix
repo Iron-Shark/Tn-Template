@@ -29,7 +29,7 @@
       enable = true;
       install = true;
       defaultEditor = true;
-      package = (pkgs.emacsWithPackagesFromUsePackage {
+      package = (pkgs.unstable.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
         package = pkgs.emacsUnstable;
         alwaysEnsure = true;
