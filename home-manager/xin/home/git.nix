@@ -1,6 +1,5 @@
 {
   enable = true;
-  package = gitFull;
   lfs.enable = true;
   userName = "Que";
   userEmail = "git@ironshark.org";
