@@ -43,34 +43,13 @@
   ];
 
   programs.git = {
-    package = pkgs.gitFull;
     enable = true;
-    lfs.enable = true;
-    userName = "Que";
-    userEmail = "git@ironshark.org";
-    ignores = [
-      "*~"
-      ".*~"
-      "#*#"
-      "'#*#'"
-      ".*.swp"
-    ];
-    aliases = {
-      send = "! git status &&
-echo -n \"Commit Message: \" &&
-read -r commitMessage &&
-git add . &&
-git commit -m \"$commitMessage\" &&
-git push";
-    };
-    extraConfig = {
-      init = {
-        defaultBranch = "main";
-        pull = {
-          rebase = true;
-        };
-      };
-    };
+    import ./home/git.nix;
+  };
+
+  programs.firefox = {
+    enable = true;
+    import ./home/firefox.nix;
   };
 
   home.file."emacs" = {
