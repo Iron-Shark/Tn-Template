@@ -48,7 +48,10 @@
   programs = {
     home-manager.enable = true;
     bash.enable = true;
-    git = import ./home/git.nix;
+    git = {
+      enable = true;
+      import ./home/git.nix;
+    };
     firefox = import ./home/firefox.nix;
   };
 

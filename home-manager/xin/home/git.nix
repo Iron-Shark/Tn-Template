@@ -1,6 +1,5 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
-  enable = true;
   package = pkgs.gitFull;
   lfs.enable = true;
   userName = "Que";
@@ -20,13 +19,12 @@ git add . &&
 git commit -m \"$commitMessage\" &&
 git push";
   };
-  # extraConfig = {
-  #   init = {
-  #     defaultBranch = "main";
-  #     pull = {
-  #       rebase = true;
-  #     };
-  #   };
-  # };
-
+  extraConfig = {
+    init = {
+      defaultBranch = "main";
+      pull = {
+        rebase = true;
+      };
+    };
+  };
 }
