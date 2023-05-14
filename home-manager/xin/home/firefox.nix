@@ -5,7 +5,8 @@
   #   };
   # };
 
-  profiles.que = {
+  enable = true;
+  profiles.xin = {
     isDefault = true;
     userChrome = ''
 

@@ -1,14 +1,16 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
-  home.stateVersion = "22.11";
+  home = {
+    stateVersion = "22.11";
+    homeDirectory = "/home/xin";
+    username = "xin";
+  };
+
   programs = {
     home-manager.enable = true;
     bash.enable = true;
-  };
-
-  home = {
-    username = "xin";
-    homeDirectory = "/home/xin";
+    git = import ./home/git.nix;
+    firefox = import ./home/firefox.nix;
   };
 
   nixpkgs = {
@@ -16,7 +18,6 @@
       outputs.overlays.additions
       outputs.overlays.modifications
     ];
-
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
@@ -41,16 +42,6 @@
     exercism
     vlc
   ];
-
-  programs.git = {
-    enable = true;
-    import ./home/git.nix;
-  };
-
-  programs.firefox = {
-    enable = true;
-    import ./home/firefox.nix;
-  };
 
   home.file."emacs" = {
     source = ./emacs;
