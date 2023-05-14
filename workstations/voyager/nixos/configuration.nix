@@ -47,7 +47,7 @@
   };
 
   networking = {
-    hostName = "vortex";
+    hostName = "voyager";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
   };
