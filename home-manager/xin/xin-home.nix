@@ -49,7 +49,7 @@
     home-manager.enable = true;
     bash.enable = true;
     imports = [
-      ./home/git.nix;
+      ./home/git.nix
     ];
     firefox = import ./home/firefox.nix;
   };
