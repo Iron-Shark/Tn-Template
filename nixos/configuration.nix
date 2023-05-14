@@ -70,7 +70,7 @@
   };
 
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
 
   time.timeZone = "America/Detroit";
   i18n = {
