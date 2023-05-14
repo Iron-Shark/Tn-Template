@@ -1,5 +1,5 @@
-{
   enable = true;
+  package = pkgs.gitFull;
   lfs.enable = true;
   userName = "Que";
   userEmail = "git@ironshark.org";
@@ -26,4 +26,3 @@ git push";
       };
     };
   };
-}
