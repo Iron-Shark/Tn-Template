@@ -128,7 +128,7 @@
     };
     que = {
       isNormalUser = true;
-      description = "Xin";
+      description = "Que";
       extraGroups = [ "networkmanager" "wheel" ];
       passwordFile = "/etc/secrets/que/que-usrPasswd.nix";
     };
