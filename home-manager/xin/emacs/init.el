@@ -379,7 +379,6 @@
                                      "\\\\" "://"))
 
 (use-package ligature
-  :straight (ligature :type git :host github :repo "mickeynp/ligature.el")
   :config
   (ligature-set-ligatures 't ligatures-fixed)
   (global-ligature-mode t))
@@ -560,7 +559,7 @@
   :init
   (projectile-mode +1))
 
-(setq  projectile-project-search-path '("~/Projects" "~/Grimoire"))
+;; (setq  projectile-project-search-path '("~/Projects" "~/Grimoire"))
 
 (use-package ag)
 
