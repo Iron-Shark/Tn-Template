@@ -8,10 +8,6 @@
         layout = "us";
         xkbVariant = "colemak_dh";
         xkbOptions = "caps:escape";
-        windowManager.exwm = {
-          enable = true;
-          enableDefaultConfig = false;
-        };
         displayManager = {
           sddm.enable = true;
           sddm.autoNumlock = true;
@@ -23,19 +19,7 @@
           "*/5 * * * *      root    date >> /tmp/cron.log"
         ];
       };
-      emacs = {
-        enable = true;
-        install = true;
-        defaultEditor = true;
-        package = (pkgs.unstable.emacsWithPackagesFromUsePackage {
-          config = ~/.config/init.el;
-          package = pkgs.emacsUnstable;
-          alwaysEnsure = true;
-          extraEmacsPackages = epkgs: [
-            epkgs.use-package
-          ];
-        });
-        };
-      };
     };
+  };
+
 })
