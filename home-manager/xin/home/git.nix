@@ -1,3 +1,5 @@
+{ inputs, outputs, lib, config, pkgs, ... }: {
+
   enable = true;
   package = pkgs.gitFull;
   lfs.enable = true;
@@ -26,3 +28,5 @@ git push";
       };
     };
   };
+
+};
