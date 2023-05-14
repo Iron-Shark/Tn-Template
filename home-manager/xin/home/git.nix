@@ -1,5 +1,7 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
+  git = {
+    enable = true;
   package = pkgs.gitFull;
   lfs.enable = true;
   userName = "Que";
@@ -27,4 +29,5 @@ git push";
       };
     };
   };
+};
 }
