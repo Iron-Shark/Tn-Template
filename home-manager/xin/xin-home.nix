@@ -44,6 +44,10 @@
       recursive = true;
       target = ".config/emacs";
     };
+    "system-scripts" = {
+      recursive = true;
+      target = ".config/system-scripts";
+    };
   };
 };
 
