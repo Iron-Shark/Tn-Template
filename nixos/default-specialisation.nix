@@ -11,7 +11,6 @@
         windowManager.exwm = {
           enable = true;
           enableDefaultConfig = false;
-          alwaysEnable = true;
           extraPackages = epkgs: [
             epkgs.use-package
           ];
