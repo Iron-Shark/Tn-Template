@@ -1,24 +1,5 @@
-{ inputs, outputs, lib, config, pkgs, ... }:
+{ inputs, outputs, lib, config, pkgs, ... }: {
 
-let
-  my-emacs = pkgs.emacsWithPackagesFromUsePackage {
-    config = ./emacs/init.el;
-    package = pkgs.emacsUnstable;
-    alwaysEnsure = true;
-    extraEmacsPackages = epkgs: [
-      epkgs.use-package
-      epkgs.exwm
-    ];
-  };
-
-  exwm-load-script = pkgs.writeText "exwm-load.el" ''
-    (progn
-      (require 'exwm)
-      (exwm-init))
-  '';
-
-
-in {
   home.stateVersion = "22.11";
   programs = {
     home-manager.enable = true;
@@ -46,6 +27,24 @@ in {
   systemd.user.startServices = "sd-switch";
 
 
+  let
+    my-emacs = pkgs.emacsWithPackagesFromUsePackage {
+      config = /home/xin/.config/emacs/init.el;
+      package = pkgs.emacsUnstable;
+      alwaysEnsure = true;
+      extraEmacsPackages = epkgs: [
+        epkgs.use-package
+        epkgs.exwm
+      ];
+    };
+
+    exwm-load-script = pkgs.writeText "exwm-load.el" ''
+    (progn
+      (require 'exwm)
+      (exwm-init))
+  '';
+
+  in {
     xsession = {
       enable = true;
       windowManager.command = ''
@@ -90,42 +89,43 @@ in {
       exercism
       vlc
     ];
+  }
 
     programs.git = {
-       package = pkgs.gitFull;
-       enable = true;
-       lfs.enable = true;
-       userName = "Que";
-       userEmail = "git@ironshark.org";
-       ignores = [
-         "*~"
-         ".*~"
-         "#*#"
-         "'#*#'"
-         ".*.swp"
-       ];
-       aliases = {
-         send = "! git status &&
+      package = pkgs.gitFull;
+      enable = true;
+      lfs.enable = true;
+      userName = "Que";
+      userEmail = "git@ironshark.org";
+      ignores = [
+        "*~"
+        ".*~"
+        "#*#"
+        "'#*#'"
+        ".*.swp"
+      ];
+      aliases = {
+        send = "! git status &&
 echo -n \"Commit Message: \" &&
 read -r commitMessage &&
 git add . &&
 git commit -m \"$commitMessage\" &&
 git push";
-       };
-       extraConfig = {
-         init = {
-           defaultBranch = "main";
-           pull = {
-             rebase = true;
-           };
-         };
-       };
-     };
+      };
+      extraConfig = {
+        init = {
+          defaultBranch = "main";
+          pull = {
+            rebase = true;
+          };
+        };
+      };
+    };
 
-  home.file."emacs" = {
-    source = ./emacs;
-    recursive = true;
-    target = ".config/emacs";
-  };
+    home.file."emacs" = {
+      source = ./emacs;
+      recursive = true;
+      target = ".config/emacs";
+    };
 
 }
