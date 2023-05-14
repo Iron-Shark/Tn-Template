@@ -12,9 +12,11 @@
           enable = true;
           enableDefaultConfig = false;
           extraPackages = epkgs: with epkgs; [
-            exwm
             use-package
+            exwm
+            burly
             doom-themes
+            helm
           ];
         };
         displayManager = {
