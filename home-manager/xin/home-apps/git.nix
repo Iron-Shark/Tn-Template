@@ -1,7 +1,7 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
 
-  programs.home-manager = {
+  programs = {
     enable = true;
     package = pkgs.gitFull;
     lfs.enable = true;
