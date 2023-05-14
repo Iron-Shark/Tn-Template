@@ -6,13 +6,6 @@
     username = "xin";
   };
 
-  programs = {
-    home-manager.enable = true;
-    bash.enable = true;
-    git = import ./home/git.nix;
-    firefox = import ./home/firefox.nix;
-  };
-
   nixpkgs = {
     overlays = [
       outputs.overlays.additions
@@ -42,6 +35,13 @@
     exercism
     vlc
   ];
+
+  programs = {
+    home-manager.enable = true;
+    bash.enable = true;
+    git = import ./home/git.nix;
+    firefox = import ./home/firefox.nix;
+  };
 
   home.file."emacs" = {
     source = ./emacs;
