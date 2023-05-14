@@ -118,7 +118,7 @@
 
   users.users = {
     root = {
-      passwordFile = "/etc/secrets/root/root-usrPasswd.nix";
+      passwordFile = "/etc/secrets/root-usrPasswd.nix";
     };
     xin = {
       isNormalUser = true;
@@ -143,7 +143,7 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      xin = import ../home-manager/xin/xin-home.nix;
+      xin = import ../home-manager/xin-home.nix;
       que = import ../home-manager/que-home.nix;
       guest = import ../home-manager/guest-home.nix;
     };
