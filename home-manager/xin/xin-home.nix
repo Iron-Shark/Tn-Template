@@ -20,14 +20,6 @@
     };
   };
 
-  file = {
-    "emacs" = {
-      source = ./emacs;
-      recursive = true;
-      target = ".config/emacs";
-    };
-  };
-
   packages = with pkgs; [
     firefox
     gitFull
@@ -44,6 +36,14 @@
     exercism
     vlc
   ];
+
+  home.file = {
+    "emacs" = {
+      source = ./emacs;
+      recursive = true;
+      target = ".config/emacs";
+    };
+  };
 
   imports = [
     ./home-apps/home-manager.nix
