@@ -1,14 +1,15 @@
-{
-  # package = pkgs.firefox.override {
-  #   cfg = {
-  #     enableTridactylNative = true;
-  #   };
-  # };
+{ inputs, outputs, lib, config, pkgs, ... }: {
 
-  enable = true;
-  profiles.xin = {
-    isDefault = true;
-    userChrome = ''
+  programs.firefox = {
+    enable = true;
+    # package = pkgs.firefox.override {
+    #   cfg = {
+    #     enableTridactylNative = true;
+    #   };
+    # };
+    profiles.xin = {
+      isDefault = true;
+      userChrome = ''
 
 /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/navbar_tabs_oneliner.css made available under Mozilla Public License v. 2.0
 See the above repository for updates as well as full license text. */
@@ -241,5 +242,6 @@ See the above repository for updates as well as full license text. */
 */
 
 '';
+    };
   };
 }

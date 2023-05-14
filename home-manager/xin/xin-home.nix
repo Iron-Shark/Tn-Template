@@ -6,38 +6,13 @@
     stateVersion = "22.11";
     homeDirectory = "/home/xin";
     username = "xin";
-
-    packages = with pkgs; [
-      firefox
-      gitFull
-      git-crypt
-      gh
-      vim
-      dropbox-cli
-      openscad
-      tridactyl-native
-      hugo
-      discord
-      weechat
-      alacritty
-      exercism
-      vlc
-    ];
-
-    file = {
-      "emacs" = {
-        source = ./emacs;
-        recursive = true;
-        target = ".config/emacs";
-      };
-    };
   };
 
   nixpkgs = {
     overlays = [
       outputs.overlays.additions
       outputs.overlays.modifications
-      ];
+    ];
 
     config = {
       allowUnfree = true;
@@ -45,11 +20,35 @@
     };
   };
 
-  programs = {
-    home-manager.enable = true;
-    bash.enable = true;
-    git = import ./home/git.nix;
-    firefox = import ./home/firefox.nix;
+  file = {
+    "emacs" = {
+      source = ./emacs;
+      recursive = true;
+      target = ".config/emacs";
+    };
   };
 
+  packages = with pkgs; [
+    firefox
+    gitFull
+    git-crypt
+    gh
+    vim
+    dropbox-cli
+    openscad
+    tridactyl-native
+    hugo
+    discord
+    weechat
+    alacritty
+    exercism
+    vlc
+  ];
+
+  imports = [
+    ./home-manager.nix
+    ./home/bash.nix
+    ./home/git.nix
+    ./home/firefox.nix
+  ];
 }
