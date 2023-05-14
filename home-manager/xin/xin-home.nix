@@ -20,7 +20,8 @@
     };
   };
 
-  packages = with pkgs; [
+  home = {
+    packages = with pkgs; [
     firefox
     gitFull
     git-crypt
@@ -37,18 +38,19 @@
     vlc
   ];
 
-  home.file = {
+  file = {
     "emacs" = {
       source = ./emacs;
       recursive = true;
       target = ".config/emacs";
     };
   };
+};
 
-  imports = [
-    ./home-apps/home-manager.nix
-    ./home-apps/bash.nix
-    ./home-apps/git.nix
-    ./home-apps/firefox.nix
-  ];
+imports = [
+  ./home-apps/home-manager.nix
+  ./home-apps/bash.nix
+  ./home-apps/git.nix
+  ./home-apps/firefox.nix
+];
 }
