@@ -688,7 +688,7 @@ it can be passed in POS."
 
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 
-(setq org-agenda-files (append
+;; (setq org-agenda-files (append
                         ;; (directory-files-recursively "~/Grimoire/" "\\.org$")
                         ;; (directory-files-recursively "~/Projects/" "\\.org$")
                         ;; ))
