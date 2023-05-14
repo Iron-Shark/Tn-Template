@@ -11,10 +11,10 @@
         windowManager.exwm = {
           enable = true;
           enableDefaultConfig = false;
-          extraPackages = epkgs: [
-            epkgs.exwm
-            epkgs.use-package
-            epkgs.doom-themes
+          extraPackages = epkgs: with epkgs; [
+            exwm
+            use-package
+            doom-themes
           ];
         };
         displayManager = {
@@ -28,6 +28,7 @@
           "*/5 * * * *      root    date >> /tmp/cron.log"
         ];
       };
+      # I'm leaving this here for later reference
       # emacs = {
       #   enable = true;
       #   install = true;
