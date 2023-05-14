@@ -46,9 +46,9 @@
   ];
 
   imports = [
-    ./home-manager.nix
-    ./home/bash.nix
-    ./home/git.nix
-    ./home/firefox.nix
+    ./home-apps/home-manager.nix
+    ./home-apps/bash.nix
+    ./home-apps/git.nix
+    ./home-apps/firefox.nix
   ];
 }
