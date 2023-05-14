@@ -2,12 +2,27 @@
   config = lib.mkIf (config.specialisation != {}) {
 
     services = {
+
       unclutter-xfixes.enable = true;
+
+      cron = {
+        enable = true;
+        systemCronJobs = [
+          "*/5 * * * *      root    date >> /tmp/cron.log"
+        ];
+      };
+
       xserver = {
         autorun = true;
         layout = "us";
         xkbVariant = "colemak_dh";
         xkbOptions = "caps:escape";
+
+        displayManager = {
+          sddm.enable = true;
+          sddm.autoNumlock = true;
+        };
+
         windowManager.exwm = {
           enable = true;
           enableDefaultConfig = false;
@@ -48,31 +63,26 @@
             aggressive-indent
           ];
         };
-        displayManager = {
-          sddm.enable = true;
-          sddm.autoNumlock = true;
-        };
       };
-      cron = {
-        enable = true;
-        systemCronJobs = [
-          "*/5 * * * *      root    date >> /tmp/cron.log"
-        ];
-      };
-      # I'm leaving this here for later reference
-      # emacs = {
-      #   enable = true;
-      #   install = true;
-      #   defaultEditor = true;
-      #   package = (pkgs.unstable.emacsWithPackagesFromUsePackage {
-      #     config = ~/.config/init.el;
-      #     package = pkgs.emacsUnstable;
-      #     alwaysEnsure = true;
-      #     extraEmacsPackages = epkgs: [
-      #       epkgs.use-package
-      #     ];
-      #   });
-      #   };
     };
+
+    environment.systemPackages = with pkgs; [
+      # pulseaudio
+      # pulseaudio-ctl
+      # pulsemixer
+      polybar
+      networkmanagerapplet
+      volctl
+      lm_sensors
+      pciutils
+      fd
+      silver-searcher
+      wget
+      unzip
+      hunspell
+      hunspellDicts.en_US-large
+      slock
+      flameshot
+    ];
   };
 })

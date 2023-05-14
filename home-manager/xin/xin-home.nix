@@ -31,25 +31,8 @@
     git-crypt
     gh
     vim
-    networkmanagerapplet
-    volctl
-    pulseaudio
-    pulseaudio-ctl
-    pulsemixer
-    ############
-    lm_sensors
-    pciutils
-    unzip
-    hunspell
-    hunspellDicts.en_US-large
-    slock
-    flameshot
     dropbox-cli
-    polybar
     openscad
-    fd
-    silver-searcher
-    wget
     tridactyl-native
     hugo
     discord
