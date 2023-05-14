@@ -15,8 +15,39 @@
             use-package
             exwm
             burly
-            doom-themes
             helm
+            helm-projectile
+            emojify
+            all-the-icons
+            ligature
+            centered-cursor-mode
+            rainbow-delimiters
+            smartparens
+            doom-modeline
+            doom-themes
+            evil
+            evil-snipe
+            evil-easymotion
+            evil-collection
+            evil-colemak-basics
+            helpful
+            which-key
+            undo-tree
+            dired-async
+            async
+            dmenu
+            magit
+            git-gutter
+            projectile
+            ag
+            rg
+            nix-mode
+            org-bullets
+            org-appear
+            org
+            ox-hugo
+            visual-fill-column
+            aggressive-indent
           ];
         };
         displayManager = {
