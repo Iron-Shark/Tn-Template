@@ -13,6 +13,7 @@
           enableDefaultConfig = false;
           extraPackages = epkgs: [
             epkgs.use-package
+            epkgs.doom-themes
           ];
         };
         displayManager = {
