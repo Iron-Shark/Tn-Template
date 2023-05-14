@@ -33,8 +33,6 @@
             helpful
             which-key
             undo-tree
-            dired-async
-            async
             dmenu
             magit
             git-gutter

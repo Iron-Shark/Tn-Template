@@ -531,16 +531,6 @@
 (use-package undo-tree)
 (global-undo-tree-mode 1)
 
-(use-package dired-async
-  :straight async
-  :diminish (dired-async-mode)
-  :init (setq dired-async-message-function #'message)
-  (with-eval-after-load 'dired (dired-async-mode)))
-
-(dired-async-mode 1)
-
-(use-package async)
-
 (use-package dmenu)
 
 (dolist (hook '(text-mode-hook))
