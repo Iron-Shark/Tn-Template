@@ -12,6 +12,7 @@
           enable = true;
           enableDefaultConfig = false;
           extraPackages = epkgs: [
+            epkgs.exwm
             epkgs.use-package
             epkgs.doom-themes
           ];
