@@ -39,22 +39,20 @@
   ];
 
   file = {
-    "emacs" = {
-      source = ./emacs;
-      recursive = true;
-      target = ".config/emacs";
-    };
-    "system-scripts" = {
-      recursive = true;
-      target = ".config/system-scripts";
-    };
+    "nix-flake-target".source = config.lib.file.mkOutOfStoreSymlink ../../../../flake.nix;
+    target = ".nix-flake-target"
   };
 };
 
-imports = [
-  ./home-apps/home-manager.nix
-  ./home-apps/bash.nix
-  ./home-apps/git.nix
-  ./home-apps/firefox.nix
-];
+  imports = [
+    ./home-apps/home-manager.nix
+    ./home-apps/bash.nix
+    ./home-apps/git.nix
+    ./home-apps/firefox.nix
+    ./home-apps/alacritty.nix
+    ./home-apps/polybar.nix
+    ./home-apps/emacs.nix
+    ./system-scripts/flake-rebuild.nix
+    ./system-scripts/flake-upgrade.nix
+  ];
 }
