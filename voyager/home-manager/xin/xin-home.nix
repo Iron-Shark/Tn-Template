@@ -20,8 +20,7 @@
     };
   };
 
-  home = {
-    packages = with pkgs; [
+  home.packages = with pkgs; [
     firefox
     gitFull
     git-crypt
@@ -38,12 +37,6 @@
     vlc
   ];
 
-  file = {
-    "nix-flake-target".source = config.lib.file.mkOutOfStoreSymlink ../../../../flake.nix;
-    target = ".nix-flake-target"
-  };
-};
-
   imports = [
     ./home-apps/home-manager.nix
     ./home-apps/bash.nix
@@ -54,5 +47,6 @@
     ./home-apps/emacs.nix
     ./system-scripts/flake-rebuild.nix
     ./system-scripts/flake-upgrade.nix
+    ./system-scripts/flake-target.nix
   ];
 }

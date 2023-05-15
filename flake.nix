@@ -37,13 +37,13 @@
           vortex = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs outputs; };
             modules = [
-              ./workstations/vortex/nixos/configuration.nix
+              ./vortex/nixos/configuration.nix
             ];
           };
-          vortex = nixpkgs.lib.nixosSystem {
+          voyager = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs outputs; };
             modules = [
-              .workstations/voyager/nixos/configuration.nix
+              ./voyager/nixos/configuration.nix
             ];
           };
         };

@@ -6,7 +6,7 @@
     text = ''
     #!/bin/sh
 
-    cd ~/.nix-flake-target
+    cd ~/.flake-target
     git add .
     git commit -m "Upgrading $HOSTNAME"
     git push
@@ -15,3 +15,4 @@
     cd -
   '';
   };
+}
