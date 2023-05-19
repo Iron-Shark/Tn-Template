@@ -35,6 +35,10 @@
     alacritty
     exercism
     vlc
+    bitwarden
+    rbw
+    gnupg
+    xclip
   ];
 
   imports = [

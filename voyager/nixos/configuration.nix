@@ -3,6 +3,7 @@
   system.stateVersion = "22.11";
 
   imports = [
+    inputs.sops-nix.nixosModules.sops
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ./default-specialisation.nix

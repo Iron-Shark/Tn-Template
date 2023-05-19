@@ -16,6 +16,7 @@
       rebuild-reboot = "rebuild && reboot";
       clean = "sudo nix-collect-garbage --delete-old && rebuild";
       reboot-clean = "sudo nix-collect-garbage --delete-old && rebuild-reboot";
+      clipboard = "xclip -selection clipboard"
     };
   };
 }

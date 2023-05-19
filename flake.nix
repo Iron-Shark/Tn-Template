@@ -10,42 +10,46 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
-    let
-      inherit (self) outputs;
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-      ];
-    in
-      rec {
-        packages = forAllSystems (system:
-          let pkgs = nixpkgs.legacyPackages.${system};
-          in import ./pkgs { inherit pkgs; }
-        );
-        devShells = forAllSystems (system:
-          let pkgs = nixpkgs.legacyPackages.${system};
-          in import ./shell.nix { inherit pkgs; }
-        );
+    outputs = { self, nixpkgs, home-manager, ... }@inputs:
+      let
+        inherit (self) outputs;
+        forAllSystems = nixpkgs.lib.genAttrs [
+          "x86_64-linux"
+        ];
+      in
+        rec {
+          packages = forAllSystems (system:
+            let pkgs = nixpkgs.legacyPackages.${system};
+            in import ./pkgs { inherit pkgs; }
+          );
+          devShells = forAllSystems (system:
+            let pkgs = nixpkgs.legacyPackages.${system};
+            in import ./shell.nix { inherit pkgs; }
+          );
 
-        overlays = import ./overlays { inherit inputs; };
-        nixosModules = import ./modules/nixos;
-        homeManagerModules = import ./modules/home-manager;
+          overlays = import ./overlays { inherit inputs; };
+          nixosModules = import ./modules/nixos;
+          homeManagerModules = import ./modules/home-manager;
 
-        nixosConfigurations = {
-          vortex = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              ./vortex/nixos/configuration.nix
-            ];
-          };
-          voyager = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs outputs; };
-            modules = [
-              ./voyager/nixos/configuration.nix
-            ];
+          nixosConfigurations = {
+            vortex = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs outputs; };
+              modules = [
+                ./vortex/nixos/configuration.nix
+              ];
+            };
+            voyager = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs outputs; };
+              modules = [
+                ./voyager/nixos/configuration.nix
+              ];
+            };
           };
         };
-      };
 }
