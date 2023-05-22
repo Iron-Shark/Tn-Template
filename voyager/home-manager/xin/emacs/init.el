@@ -2,15 +2,13 @@
 ;; DO NOT MODIFY THIS FILE!
 ;; Any changes made here will be overwritten.
 
-;; (server-start)
-
 ;; (start-process-shell-command "Screen Configuration" "*Messages*" "xrandr --output HDMI-1-1 --primary && xrandr --output eDP-1-1 --off")
 
-;; (start-process-shell-command "PolyBar StartUp" "*Messages*" "polybar vortex")
+(start-process-shell-command "PolyBar StartUp" "*Messages*" "polybar voyager")
 
-;; (start-process-shell-command "volctl" "*Messages*" "volctl")
+(start-process-shell-command "volctl" "*Messages*" "volctl")
 
-;; (start-process-shell-command "nm-applet" "*Messages*" "nm-applet")
+(start-process-shell-command "nm-applet" "*Messages*" "nm-applet")
 
 ;; (start-process-shell-command "Wacom Tablet Start" "*Messages*" "bash ~/.config/system-scripts/wacom-tablet-bindings.sh")
 

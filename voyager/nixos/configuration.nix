@@ -99,7 +99,9 @@
     fira-go
   ];
 
-  users.users = {
+  users = {
+    mutableUsers = false;
+    users = {
     root = {
       passwordFile = "/etc/secrets/root/root-usrPasswd.nix";
     };
@@ -121,6 +123,7 @@
       extraGroups = [ "networkmanager" ];
       passwordFile = "/etc/secrets/guest/guest-usrPasswd.nix";
     };
+   };
   };
 
   home-manager = {

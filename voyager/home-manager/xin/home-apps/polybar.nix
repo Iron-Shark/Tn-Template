@@ -70,7 +70,7 @@
         "module/cpu-temp" = {
           type = "custom/script";
           interval = "2";
-          exec = "/home/que/.config/polybar/polybar-CPU-temp.sh";
+          exec = "~/.config/polybar/polybar-CPU-temp.sh";
         };
         "module/date" = {
           type = "internal/date";
@@ -93,7 +93,6 @@
   };
 
   home.file = {
-
     "polybar-CPU-temp.sh" = {
       target = ".config/polybar/polybar-CPU-temp.sh";
       executable = true;
@@ -102,16 +101,6 @@
 
     sensors | grep "Package id 0:" | tr -d '+' | awk '{print $4}'
   '';
-    };
-
-    "polybar-GPU.sh" = {
-      target = ".config/polybar/polybar-GPU.sh";
-      executable = true;
-      text = ''
-      #!/bin/sh
-
-      nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ print ""$1"","%"}'
-    '';
     };
   };
 

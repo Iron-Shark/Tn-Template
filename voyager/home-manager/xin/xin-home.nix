@@ -39,6 +39,7 @@
     rbw
     gnupg
     xclip
+    volctl
   ];
 
   imports = [
