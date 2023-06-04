@@ -2,44 +2,14 @@
 ;; DO NOT MODIFY THIS FILE!
 ;; Any changes made here will be overwritten.
 
-;; (start-process-shell-command "Screen Configuration" "*Messages*" "xrandr --output HDMI-1-1 --primary && xrandr --output eDP-1-1 --off")
-
 (start-process-shell-command "PolyBar StartUp" "*Messages*" "polybar voyager")
 
 (start-process-shell-command "volctl" "*Messages*" "volctl")
 
 (start-process-shell-command "nm-applet" "*Messages*" "nm-applet")
 
-;; (start-process-shell-command "Wacom Tablet Start" "*Messages*" "bash ~/.config/system-scripts/wacom-tablet-bindings.sh")
-
 (setq package-enable-at-startup nil)
 
-;; (defvar bootstrap-version)
-;; (let ((bootstrap-file
-;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-;;       (bootstrap-version 5))
-;;   (unless (file-exists-p bootstrap-file)
-;;     (with-current-buffer
-;;         (url-retrieve-synchronously
-;;          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-;;          'silent 'inhibit-cookies)
-;;       (goto-char (point-max))
-;;       (eval-print-last-sexp)))
-;;   (load bootstrap-file nil 'nomessage))
-
-;; (setq straight-repository-branch "develop")
-
-;; (straight-use-package
-;;  '(use-package
-;;     :type git
-;;     :host github
-;;     :repo "jwiegley/use-package"))
-
-;; (eval-when-compile
-;;   (add-to-list 'load-path "~/.emacs.d/straight/build")
-;;   (require 'use-package))
-
-;; (setq straight-use-package-by-default t) ;Adds the straight argument to all use-package statements.
 (setq use-package-always-ensure t) ;Adds the require argument to all use-package statements.
 
 (setq vc-follow-symlinks t)
@@ -48,6 +18,8 @@
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup-files")))
 
 (setq warning-minimum-level ":error")
+
+(server-start)
 
 (menu-bar-mode -1)
 
@@ -58,6 +30,8 @@
 (set-fringe-mode 5)
 
 (global-hl-line-mode 1)
+
+(display-battery-mode 1)
 
 (setq column-number-mode t)
 

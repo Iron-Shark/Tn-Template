@@ -18,5 +18,9 @@
       reboot-clean = "sudo nix-collect-garbage --delete-old && rebuild-reboot";
       clipboard = "xclip -selection clipboard";
     };
+
+    sessionVariables = {
+      WEBKIT_DISABLE_COMPOSITING_MODE=1;
+    };
   };
 }

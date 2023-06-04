@@ -18,6 +18,8 @@
         xkbVariant = "colemak_dh";
         xkbOptions = "caps:escape";
 
+        desktopManager.lxqt.enable = true;
+
         displayManager = {
           sddm.enable = true;
           sddm.autoNumlock = true;
@@ -66,23 +68,30 @@
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      # pulseaudio
-      # pulseaudio-ctl
-      # pulsemixer
-      polybar
-      networkmanagerapplet
-      volctl
-      lm_sensors
-      pciutils
-      fd
-      silver-searcher
-      wget
-      unzip
-      hunspell
-      hunspellDicts.en_US-large
-      slock
-      flameshot
+    environment = {
+      systemPackages = with pkgs; [
+        # pulseaudio
+        # pulseaudio-ctl
+        # pulsemixer
+        polybar
+        networkmanagerapplet
+        volctl
+        lm_sensors
+        pciutils
+        fd
+        silver-searcher
+        wget
+        unzip
+        hunspell
+        hunspellDicts.en_US-large
+        slock
+        flameshot
     ];
-  };
-})
+
+      lxqt.excludePackages
+        (with pkgs.lxqt; [
+          qterminal
+        ]);
+    };
+
+  })

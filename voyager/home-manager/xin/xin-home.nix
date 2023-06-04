@@ -49,7 +49,7 @@
     ./home-apps/firefox.nix
     ./home-apps/alacritty.nix
     ./home-apps/polybar.nix
-    ./home-apps/emacs.nix
+    ./home-apps/emacs/emacs.nix
     ./system-scripts/flake-rebuild.nix
     ./system-scripts/flake-upgrade.nix
     ./system-scripts/flake-target.nix
